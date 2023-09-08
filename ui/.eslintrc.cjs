@@ -26,7 +26,14 @@ module.exports = {
     indent: ["error", 2],
     quotes: ["error", "double"],
     semi: ["error", "always"],
-    "linebreak-style": ["error", "unix"],
-    "react/react-in-jsx-scope": "off"
+    "linebreak-style": "off",
+    "react/react-in-jsx-scope": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto"
+      }
+    ],
+    "no-unused-vars": "warn"
   }
 };
