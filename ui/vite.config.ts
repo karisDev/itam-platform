@@ -14,6 +14,9 @@ export default defineConfig({
     })
   ],
   resolve: {
-    alias: [{ find: "@", replacement: "/src/shared" }]
+    alias: [
+      { find: "@", replacement: "/src/shared" },
+      { find: "api", replacement: "/src/api" }
+    ]
   }
 });
