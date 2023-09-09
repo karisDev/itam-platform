@@ -1,5 +1,4 @@
 import re
-from pprint import pprint
 import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -20,7 +19,8 @@ def parse_data():
     print("parse")
     events = collect_data()
     db = SessionLocal()
-    for event in events:
+    for event in events[::-1]:
+        print(event)
         db_event = EventDB(event)
         curr_event = db.query(EventDB).filter_by(title=db_event.title,
                                                  date_event=db_event.date_event).first()

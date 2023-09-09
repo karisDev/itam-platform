@@ -13,6 +13,7 @@ class EventDB(Base):
     date_registration = Column(String)
     prize = Column(String)
     target = Column(String)
+    image_url = Column(String)
 
     def __init__(self, data):
         self.title = data.get('title')
@@ -20,3 +21,4 @@ class EventDB(Base):
         self.date_registration = data.get('Дата конца регистрации')
         self.prize = data.get('Призовой фонд')
         self.target = data.get('Целевая аудитория')
+        self.image_url = data.get('image_url')
