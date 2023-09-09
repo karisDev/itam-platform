@@ -20,13 +20,25 @@ hackatons = soup.find_all("div", class_=re.compile("textwrapper"))
 
 all_hackathons = []  # Список для хранения данных по каждому хакатону
 
-for hackathon in hackatons:
+# Парсинг блоков div с классом t776__imgwrapper
+img_wrappers = soup.find_all("div", class_="t776__imgwrapper")
+
+img_urls = []
+
+for img_wrapper in img_wrappers:
+    img_div = img_wrapper.find("div", class_="t776__bgimg")
+    if img_div and "data-original" in img_div.attrs:
+        img_url = img_div["data-original"]
+    else:
+        img_url = None  # Если изображение не найдено, добавляем None
+    img_urls.append(img_url)
+
+for hackathon, img_url in zip(hackatons, img_urls):
     hackathon_data = {}  # Словарь для хранения данных по текущему хакатону
     title = hackathon.find(class_=re.compile("title")).text.strip()
     hackathon_data["title"] = title
-
+    
     contents = hackathon.find(class_=re.compile("descr")).contents
-
     res, tmp = [], ''
     for content in contents:
         if isinstance(content, str):
@@ -40,10 +52,9 @@ for hackathon in hackatons:
             tmp = content.text
 
     hackathon_data["details"] = res
+    hackathon_data["image_url"] = img_url  # Добавляем ссылку на изображение
     all_hackathons.append(hackathon_data)
 
-# Теперь у вас есть список словарей all_hackathons, где каждый словарь содержит информацию о хакатоне.
-print(1)
 def extract_hackathon_data(hackathon_list):
     extracted_data = []
 
@@ -66,6 +77,8 @@ def extract_hackathon_data(hackathon_list):
                 data["Призовой фонд"] = detail.replace("Призовой фонд:", "").strip()
             elif "Целевая аудитория:" in detail:
                 data["Целевая аудитория"] = detail.replace("Целевая аудитория:", "").strip()
+            data["image_url"] = hackathon["image_url"]
+
 
         extracted_data.append(data)
 
@@ -73,4 +86,3 @@ def extract_hackathon_data(hackathon_list):
 
 result = extract_hackathon_data(all_hackathons)
 
-result[10:15] # test

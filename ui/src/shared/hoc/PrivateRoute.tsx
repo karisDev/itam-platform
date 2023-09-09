@@ -6,10 +6,9 @@ import AuthStore from "@/stores/AuthStore";
 const PrivateRoute: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
   const { authState } = AuthStore;
 
-  if (authState === "loading") return <></>;
+  if (authState === "loading") return null;
   if (authState === "anonymous") return <Navigate to="/login" />;
-
-  return <>{children}</>;
+  return children;
 });
 
 export default PrivateRoute;

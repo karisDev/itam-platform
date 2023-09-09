@@ -24,6 +24,7 @@ export default {
           primary: "#333333"
         },
         button: {
+          disabled: "#888888",
           primary: {
             bg: "#EDEDED",
             text: "#0A0A0A",
@@ -37,7 +38,8 @@ export default {
         },
         input: {
           bg: "#0A0A0A",
-          hover: "#121212"
+          hover: "#121212",
+          disabled: "#2A2A2A"
         },
         status: {
           error: "#BF5552"

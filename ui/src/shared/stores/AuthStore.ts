@@ -18,8 +18,7 @@ const AuthStore = new (class {
     try {
       const user = await AuthEndpoint.login(username, password);
       if (user) {
-        this.user = user;
-        this.authState = "authorized";
+        this.setUserAndAuthState(user);
         return true;
       }
       return false;
@@ -33,8 +32,7 @@ const AuthStore = new (class {
     try {
       const user = await AuthEndpoint.register(email, name, nickname, password);
       if (user) {
-        this.user = user;
-        this.authState = "authorized";
+        this.setUserAndAuthState(user);
         return true;
       }
       return false;
@@ -51,7 +49,7 @@ const AuthStore = new (class {
 
   public async checkAuth() {
     try {
-      const user = await AuthEndpoint.getUser();
+      const user = await AuthEndpoint.getAuth();
       this.setUserAndAuthState(user);
     } catch {
       this.setUserAndAuthState(null);

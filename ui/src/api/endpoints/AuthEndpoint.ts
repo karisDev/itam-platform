@@ -43,7 +43,8 @@ export namespace AuthEndpoint {
     return parseJwt<UserAuth>(result.access_token);
   };
 
-  export const getUser = async () => {
-    return null;
+  export const getAuth = async () => {
+    const result = await api.get<UserAuth>("/api/users/me");
+    return result;
   };
 }
