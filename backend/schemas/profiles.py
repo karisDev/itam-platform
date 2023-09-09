@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 
 class Profile(BaseModel):
+    user_id: int
     positions: list
     competences: list
     work_experience: str

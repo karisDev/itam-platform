@@ -51,7 +51,6 @@ class UserRepository:
         return user
 
 
-
 def get_user_repository(db: Session = Depends(get_db)) -> UserRepository:
     user_repository = UserRepository(db)
     return user_repository
