@@ -4,8 +4,8 @@ from pydantic import BaseModel
 
 
 class Profile(BaseModel):
-    position: str
-    competence: str
+    positions: list
+    competences: list
     work_experience: str
     description: str
     ready_to_move: bool
@@ -14,3 +14,6 @@ class Profile(BaseModel):
     command_interest: int
     rating: int
     participation_count: int
+
+    class Config:
+        from_attributes = True

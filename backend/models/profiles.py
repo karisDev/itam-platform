@@ -1,14 +1,19 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Text, Boolean, JSON
+from sqlalchemy.orm import relationship
 
+# from .profile_competence import profile_competence
 from .base import Base
+# from .profile_position import profile_positions
 
 
 class ProfileDB(Base):
     __tablename__ = "profiles"
 
     id = Column(Integer, primary_key=True, index=True)
-    position = Column(String)
-    competence = Column(String)
+    # positions = relationship("Position", secondary=profile_positions, back_populates="profiles")
+    # competence = relationship("Competence", secondary=profile_competence, back_populates="competence")
+    positions = Column(JSON)
+    competences = Column(JSON)
     work_experience = Column(String)
     description = Column(Text)
     ready_to_move = Column(Boolean)
@@ -21,8 +26,8 @@ class ProfileDB(Base):
 
     def __init__(self, user_id, profile_data):
         self.user_id = user_id
-        self.position = profile_data.position
-        self.competence = profile_data.competence
+        self.positions = profile_data.positions
+        self.competences = profile_data.competences
         self.work_experience = profile_data.work_experience
         self.description = profile_data.description
         self.ready_to_move = profile_data.ready_to_move

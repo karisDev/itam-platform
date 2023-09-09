@@ -11,16 +11,13 @@ options.add_argument("--headless")
 if os.environ.get('release', None):
     options.binary_location = os.environ.get('GOOGLE_CHROME_SHIM', None)
     options.add_argument('--no-sandbox')
-print(options.arguments)
 driver = webdriver.Chrome(options=options)
 
 
 def parse_data():
-    print("parse")
     events = collect_data()
     db = SessionLocal()
     for event in events[::-1]:
-        print(event)
         db_event = EventDB(event)
         curr_event = db.query(EventDB).filter_by(title=db_event.title,
                                                  date_event=db_event.date_event).first()
