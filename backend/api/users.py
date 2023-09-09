@@ -23,6 +23,14 @@ def get_me(token: Annotated[str, Depends(oauth2_scheme)], auth_service: AuthServ
     return user
 
 
+@router.get("/profile/check")
+def profile(user_id: int, user_service: UserService = Depends(get_user_service)):
+    profile = user_service.get_profile(user_id)
+    if not profile:
+        return False
+    return True
+
+
 @router.post("/profile")
 def profile(user_id: int, profile_data: Profile, user_service: UserService = Depends(get_user_service)):
     user_service.set_profile(user_id, profile_data)

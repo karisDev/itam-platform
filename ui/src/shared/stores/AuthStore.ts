@@ -16,12 +16,9 @@ const AuthStore = new (class {
   public async login(username: string, password: string) {
     if (!username || !password) return false;
     try {
-      const user = await AuthEndpoint.login(username, password);
-      if (user) {
-        this.setUserAndAuthState(user);
-        return true;
-      }
-      return false;
+      const auth = await AuthEndpoint.login(username, password);
+      await this.setUserAndAuthState(auth.id);
+      return true;
     } catch {
       return false;
     }
@@ -31,36 +28,33 @@ const AuthStore = new (class {
     if (!email || !name || !nickname || !password) return false;
     try {
       const user = await AuthEndpoint.register(email, name, nickname, password);
-      if (user) {
-        this.setUserAndAuthState(user);
-        return true;
-      }
-      return false;
+      this.setUserAndAuthState(user.id);
+      return true;
     } catch {
       return false;
     }
   }
 
   public logout() {
-    this.user = null;
-    this.authState = "anonymous";
-    removeStoredAuthToken();
+    this.setUserAndAuthState(null);
   }
 
   public async checkAuth() {
     try {
       const user = await AuthEndpoint.getAuth();
-      this.setUserAndAuthState(user);
+      this.setUserAndAuthState(user.id);
     } catch {
       this.setUserAndAuthState(null);
     }
   }
 
-  private setUserAndAuthState(user: UserResult | null) {
+  private async setUserAndAuthState(userId: number | null) {
+    const user = userId ? await AuthEndpoint.getUser(userId) : null;
     if (user) {
       this.user = user;
       this.authState = "authorized";
     } else {
+      removeStoredAuthToken();
       this.user = null;
       this.authState = "anonymous";
     }

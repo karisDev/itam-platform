@@ -5,8 +5,6 @@ import asyncio
 import schedule
 
 from backend.api.index import router
-from backend.core.database import get_db
-from backend.models.events import EventDB
 from backend.parsing import collect_data, parse_data
 from backend.settings import settings
 
