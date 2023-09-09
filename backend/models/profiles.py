@@ -16,7 +16,6 @@ class ProfileDB(Base):
     command_pitch = Column(Integer, default=0)
     command_tasks = Column(Integer, default=0)
     command_interest = Column(Integer, default=0)
-    team_id = Column(Integer, default=None)
     rating = Column(Integer, default=0)
     participation_count = Column(Integer, default=0)
 
@@ -30,6 +29,5 @@ class ProfileDB(Base):
         self.command_pitch = profile_data.command_pitch
         self.command_tasks = profile_data.command_tasks
         self.command_interest = profile_data.command_interest
-        self.team_id = profile_data.team_id
         self.rating = profile_data.rating
         self.participation_count = profile_data.participation_count

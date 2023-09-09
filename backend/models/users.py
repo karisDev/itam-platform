@@ -13,4 +13,6 @@ class UserDB(Base):
     fullname = Column(String)
     role = Column(String, default='user')
     hashed_password = Column(String)
+    team_id = Column(Integer, nullable=True)
+
 
