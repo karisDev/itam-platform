@@ -9,7 +9,7 @@ import Heading from "@/components/Heading";
 export const App = () => {
   const location = useLocation();
   return (
-    <div className="bg-bg-primary text-text-primary text-sm w-full h-full flex flex-col">
+    <div className="bg-bg-secondary text-text-primary text-sm w-full h-full flex flex-col">
       <Heading />
       <SwitchTransition>
         <CSSTransition key={location.key} classNames="fade" timeout={300} unmountOnExit>

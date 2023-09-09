@@ -2,6 +2,7 @@ import LogoSvg from "@/assets/logo.svg";
 import { NavLink, useLocation } from "react-router-dom";
 import SignOutSvg from "@/assets/signout.svg";
 import AuthStore from "@/stores/AuthStore";
+import { observer } from "mobx-react-lite";
 
 const NavItem = ({
   children,
@@ -24,11 +25,11 @@ const NavItem = ({
   );
 };
 
-const Heading = () => {
+const Heading = observer(() => {
   const currentRoute = useLocation().pathname;
-  if (currentRoute === "/login") return null;
+  if (AuthStore.authState === "anonymous" || AuthStore.authState === "loading") return null;
   return (
-    <header className="w-full h-[60px] flex items-center px-4 bg-bg-primary text-text-primary gap-[24px] border-b-[1px] border-border-primary">
+    <header className="w-full h-[60px] slide-top flex items-center px-4 bg-bg-primary text-text-primary gap-[24px] border-b-[1px] border-border-primary">
       <NavLink to={"/"}>
         <LogoSvg width={64} height={24} />
       </NavLink>
@@ -57,6 +58,6 @@ const Heading = () => {
       </div>
     </header>
   );
-};
+});
 
 export default Heading;
