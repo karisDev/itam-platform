@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 
 from backend.core.database import get_db
 from backend.core.security import get_password_hash
-from backend.models import UserDB
+from backend.models import UserDB, ProfileDB
+from backend.schemas.profiles import Profile
 from backend.schemas.users import UserRegister
 
 
@@ -28,6 +29,15 @@ class UserRepository:
         self.db.refresh(db_user)
         return db_user
 
+    def get_profile(self, user_id: int):
+        db_profile = self.db.query(Profile).filter_by(user_id=user_id).first()
+        return db_profile
+
+    def set_profile(self, user_id: int, profile: Profile):
+        db_profile = ProfileDB(user_id, profile)
+        self.db.add(db_profile)
+        self.db.commit()
+
     def get_users(self, skip: int = 0, limit: int = 100) -> list[UserDB]:
         users = self.db.query(UserDB).offset(skip).limit(limit).all()
         return users
@@ -39,6 +49,7 @@ class UserRepository:
     def get_user_by_id(self, user_id: int) -> UserDB:
         user = self.db.query(UserDB).filter_by(id=user_id).first()
         return user
+
 
 
 def get_user_repository(db: Session = Depends(get_db)) -> UserRepository:

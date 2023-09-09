@@ -6,7 +6,6 @@ from backend.models import UserDB
 from backend.services.users import UserService, get_user_service
 from backend.settings import settings
 from backend.core.security import verify_password, oauth2_scheme
-from backend.schemas.tokens import TokenData
 from backend.schemas.users import UserRegister, User, UserLogin
 
 

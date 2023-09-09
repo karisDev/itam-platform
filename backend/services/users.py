@@ -3,6 +3,7 @@ from passlib.context import CryptContext
 
 from backend.models import UserDB
 from backend.repositories.user.postgresql import UserRepository, get_user_repository
+from backend.schemas.profiles import Profile
 from backend.schemas.users import UserRegister
 from backend.core.security import get_password_hash
 
@@ -51,6 +52,13 @@ class UserService:
     def get_user_by_email(self, email: str) -> UserDB:
         user = self.db.get_user_by_email(email)
         return user
+
+    def set_profile(self, user_id: int, profile: Profile):
+        self.db.set_profile(user_id, profile)
+
+    def get_profile(self, user_id: int):
+        profile = self.db.get_profile(user_id)
+        return profile
 
 
 def get_user_service(user_repository: UserRepository = Depends(get_user_repository)) -> UserService:
