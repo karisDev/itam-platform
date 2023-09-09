@@ -26,11 +26,11 @@ def root():
     return {"message": "Hello from root!"}
 
 
-@app.on_event("startup")
-async def startup_event():
-    parse_data()
-    start_background_task()
-    asyncio.create_task(background_task())
+# @app.on_event("startup")
+# async def startup_event():
+#     parse_data()
+#     start_background_task()
+#     asyncio.create_task(background_task())
 
 
 def start_background_task():

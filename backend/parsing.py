@@ -9,8 +9,9 @@ from backend.models.events import EventDB
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")
-
-driver = webdriver.Chrome(options=options)
+options.add_argument('--no-sandbox')
+options.binary_location = GOOGLE_CHROME_PATH
+driver = webdriver.Chrome(execution_path=CHROMEDRIVER_PATH, options=options)
 
 
 def parse_data():
@@ -36,9 +37,10 @@ def collect_data():
         driver.quit()
     except:
         print("Ooops...")
+        return
 
     soup = BeautifulSoup(source_page, "lxml")
-    hackatons = soup.find_all("div", class_=re.compile("textwrapper"))
+    hackathons = soup.find_all("div", class_=re.compile("textwrapper"))
 
     all_hackathons = []  # Список для хранения данных по каждому хакатону
 
@@ -55,7 +57,7 @@ def collect_data():
             img_url = None  # Если изображение не найдено, добавляем None
         img_urls.append(img_url)
 
-    for hackathon, img_url in zip(hackatons, img_urls):
+    for hackathon, img_url in zip(hackathons, img_urls):
         hackathon_data = {}  # Словарь для хранения данных по текущему хакатону
         title = hackathon.find(class_=re.compile("title")).text.strip()
         hackathon_data["title"] = title
