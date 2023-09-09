@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 import uvicorn
 from starlette.middleware.cors import CORSMiddleware
+import asyncio
+import schedule
 
 from backend.api.index import router
 from backend.settings import settings
@@ -19,6 +21,22 @@ app.include_router(router)
 @app.get("/")
 def root():
     return {"message": "Hello from root!"}
+
+@app.on_event("startup")
+async def startup_event():
+    start_background_task()
+    asyncio.create_task(background_task())
+
+
+def start_background_task():
+    schedule.every(1).hour.do(parse_data)  # Запускать каждый час
+
+
+async def background_task():
+    while True:
+        schedule.run_pending()
+        await asyncio.sleep(1)
+
 
 if __name__ == "__main__":
     uvicorn.run(
