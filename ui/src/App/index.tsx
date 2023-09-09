@@ -5,6 +5,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import LoginView from "../pages/Login";
 import PrivateRoute from "@/hoc/PrivateRoute";
 import Heading from "@/components/Heading";
+import { TeamPage } from "../pages/myteam/teamPage.tsx";
 
 export const App = () => {
   const location = useLocation();
@@ -21,6 +22,14 @@ export const App = () => {
               element={
                 <PrivateRoute>
                   <div>Not test</div>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/myteam"
+              element={
+                <PrivateRoute>
+                  <TeamPage />
                 </PrivateRoute>
               }
             />
