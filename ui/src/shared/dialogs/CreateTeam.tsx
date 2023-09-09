@@ -17,21 +17,27 @@ onConfirm={() => {}}>
 
 export default function DialogBase({
   isOpen,
-  setIsOpen,
+  onCancel,
   children,
   title,
   onConfirm,
-  confirmText
+  confirmText,
+  subtitle,
+  width,
+  coolBlur
 }: {
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  children: JSX.Element | JSX.Element[];
+  onCancel?: () => void;
+  children?: JSX.Element | JSX.Element[];
   title: string;
   onConfirm: () => void;
   confirmText: string;
+  subtitle?: string;
+  width?: string | number;
+  coolBlur?: boolean;
 }) {
   function closeModal() {
-    setIsOpen(false);
+    onCancel?.();
   }
 
   return (
@@ -45,7 +51,7 @@ export default function DialogBase({
           leave="ease-in duration-200"
           leaveFrom="opacity-100"
           leaveTo="opacity-0">
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 bg-black bg-opacity-30" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -58,18 +64,28 @@ export default function DialogBase({
               leave="ease-in duration-200"
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95">
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-xl text-text-primary bg-bg-primary border-border-primary border text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-xl font-medium p-6">
+              <Dialog.Panel
+                className="w-full transform overflow-hidden rounded-xl text-text-primary bg-bg-primary border-border-primary border text-left align-middle shadow-xl transition-all"
+                style={{
+                  width: width
+                }}>
+                <Dialog.Title as="h3" className="text-xl font-medium p-6 flex flex-col gap-1">
                   {title}
+                  {subtitle && <span className="text-text-secondary text-sm">{subtitle}</span>}
                 </Dialog.Title>
                 <Dialog.Description as="div" className="flex flex-col gap-3 px-6">
                   {children}
                 </Dialog.Description>
-                <div className="flex justify-between border-t-[1px] border-border-primary py-3 mt-6 px-6 bg-bg-secondary">
-                  <Button appearance="secondary" onClick={closeModal} className="w-fit">
-                    Отмена
-                  </Button>
-                  <Button appearance="primary" onClick={onConfirm} className="w-fit">
+                <div className="flex border-t-[1px] border-border-primary py-3 mt-6 px-6 bg-bg-secondary">
+                  {onCancel && (
+                    <Button appearance="secondary" onClick={closeModal} className="w-fit">
+                      Отмена
+                    </Button>
+                  )}
+                  <Button
+                    appearance="primary"
+                    onClick={onConfirm}
+                    className={`w-fit ml-auto ${coolBlur ? "with-cool-blur" : ""}`}>
                     {confirmText}
                   </Button>
                 </div>

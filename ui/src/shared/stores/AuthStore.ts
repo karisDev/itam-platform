@@ -1,11 +1,12 @@
-import { AuthEndpoint, UserResult } from "api/endpoints/AuthEndpoint";
+import { AuthEndpoint, UserAuth, UserResult, UserUpdate } from "api/endpoints/AuthEndpoint";
 import { removeStoredAuthToken } from "api/utils/authToken";
 import { makeAutoObservable } from "mobx";
 
-type AuthState = "loading" | "anonymous" | "authorized";
+type AuthState = "loading" | "anonymous" | "authorized" | "unfinished";
 
 const AuthStore = new (class {
   public user: UserResult | null = null;
+  public auth: UserAuth | null = null;
   public authState: AuthState = "loading";
 
   constructor() {
@@ -17,7 +18,7 @@ const AuthStore = new (class {
     if (!username || !password) return false;
     try {
       const auth = await AuthEndpoint.login(username, password);
-      await this.setUserAndAuthState(auth.id);
+      await this.setUserAndAuthState(auth);
       return true;
     } catch {
       return false;
@@ -27,8 +28,8 @@ const AuthStore = new (class {
   public async register(email: string, name: string, nickname: string, password: string) {
     if (!email || !name || !nickname || !password) return false;
     try {
-      const user = await AuthEndpoint.register(email, name, nickname, password);
-      this.setUserAndAuthState(user.id);
+      const auth = await AuthEndpoint.register(email, name, nickname, password);
+      await this.setUserAndAuthState(auth);
       return true;
     } catch {
       return false;
@@ -41,22 +42,53 @@ const AuthStore = new (class {
 
   public async checkAuth() {
     try {
-      const user = await AuthEndpoint.getAuth();
-      this.setUserAndAuthState(user.id);
+      const auth = await AuthEndpoint.getAuth();
+      this.setUserAndAuthState(auth);
     } catch {
       this.setUserAndAuthState(null);
     }
   }
 
-  private async setUserAndAuthState(userId: number | null) {
-    const user = userId ? await AuthEndpoint.getUser(userId) : null;
-    if (user) {
-      this.user = user;
-      this.authState = "authorized";
-    } else {
+  private async setUserAndAuthState(userAuth: UserAuth | null) {
+    this.auth = userAuth;
+    if (userAuth === null) {
       removeStoredAuthToken();
       this.user = null;
       this.authState = "anonymous";
+      return;
+    }
+
+    try {
+      const authFinished = await AuthEndpoint.checkAuthFinished(userAuth.id);
+      if (!authFinished) {
+        this.authState = "unfinished";
+        return;
+      }
+      this.authState = "authorized";
+      const user = await AuthEndpoint.getUser(userAuth.id);
+      this.user = user;
+    } catch {
+      this.setUserAndAuthState(null);
+    }
+  }
+
+  public async finishRegistration(data: UserUpdate) {
+    if (!this.auth) return false;
+    const updatedUser: UserResult = {
+      ...data,
+      user_id: this.auth.id,
+      command_pitch: 0,
+      command_tasks: 0,
+      command_interest: 0,
+      rating: 0,
+      participation_count: 0
+    };
+    try {
+      await AuthEndpoint.updateUser(updatedUser);
+      this.setUserAndAuthState(this.auth);
+      return true;
+    } catch {
+      return false;
     }
   }
 })();
