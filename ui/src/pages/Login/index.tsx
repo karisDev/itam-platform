@@ -1,4 +1,5 @@
 import LogoSvg from "@/assets/logo.svg";
+import CreateTeam from "@/dialogs/CreateTeam";
 import AuthStore from "@/stores/AuthStore";
 import { Button } from "@/ui/Button";
 import { Input } from "@/ui/Input";

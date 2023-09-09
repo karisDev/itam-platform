@@ -22,10 +22,10 @@ export const Button: React.FC<ButtonProps> = ({
       //     : "bg-bg-primary text-text-main hover:bg-bg-lighter"
       // } select-none shadow-sm duration-200 hover:shadow-md active:shadow-sm disabled:bg-bg-disabled transition-all text-${fontSize} font-medium rounded-md py-3 ${className}`}
       className={twMerge(
-        "select-none h-12 w-full rounded-md transition-all py-3 font-medium",
+        "select-none h-10 w-full rounded-md transition-all px-3 flex items-center justify-center",
         appearance === "primary"
           ? "bg-button-primary-bg hover:bg-button-primary-hover text-button-primary-text"
-          : "bg-button-secondary-bg hover:bg-button-secondary-hover text-button-secondary-text",
+          : "bg-button-secondary-bg hover:bg-button-secondary-hover text-button-secondary-text border-border-primary border",
         className
       )}
       {...rest}
