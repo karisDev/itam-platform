@@ -1,9 +1,27 @@
+import { Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./base.css";
+import "./transitions.scss";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 export const App = () => {
+  const location = useLocation();
   return (
-    <>
-      <h1 className="text-sm">TEst text</h1>
-    </>
+    <SwitchTransition>
+      <CSSTransition key={location.key} classNames="fade" timeout={300} unmountOnExit>
+        <Routes location={location}>
+          {/* <Route index element={<Navigate to="upload" />} /> */}
+          <Route
+            path="/dashboard"
+            element={
+              <div>
+                Test<Link to={"/login"}>TEstgn</Link>
+              </div>
+            }
+          />
+          <Route path="login" element={<div>Not test</div>} />
+          <Route path="*" element={<Navigate to="/dashboard" />} />
+        </Routes>
+      </CSSTransition>
+    </SwitchTransition>
   );
 };
