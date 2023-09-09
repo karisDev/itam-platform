@@ -5,6 +5,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import LoginView from "../pages/Login";
 import PrivateRoute from "@/hoc/PrivateRoute";
 import Heading from "@/components/Heading";
+import Profile from "../pages/Profile";
 
 export const App = () => {
   const location = useLocation();
@@ -15,12 +16,13 @@ export const App = () => {
         <CSSTransition key={location.key} classNames="fade" timeout={300} unmountOnExit>
           <Routes location={location}>
             {/* <Route index element={<Navigate to="upload" />} /> */}
-            <Route path="/login" element={<LoginView />} />
+            {/* <Route path="/login" element={<LoginView />} /> */}
+            <Route path="/login" element={<Profile />} />
             <Route
               path="/profile"
               element={
                 <PrivateRoute>
-                  <div>Not test</div>
+                  <Profile />
                 </PrivateRoute>
               }
             />
