@@ -24,7 +24,7 @@ def get_me(token: Annotated[str, Depends(oauth2_scheme)], auth_service: AuthServ
 
 
 @router.get("/profile/check")
-def profile(user_id: int, user_service: UserService = Depends(get_user_service)):
+def check_profile(user_id: int, user_service: UserService = Depends(get_user_service)):
     profile = user_service.get_profile(user_id)
     if not profile:
         return False
@@ -32,7 +32,7 @@ def profile(user_id: int, user_service: UserService = Depends(get_user_service))
 
 
 @router.post("/profile")
-def profile(user_id: int, profile_data: Profile, user_service: UserService = Depends(get_user_service)):
+def set_profile(user_id: int, profile_data: Profile, user_service: UserService = Depends(get_user_service)):
     profile = user_service.get_profile(user_id)
     if profile:
         raise HTTPException(status_code=400, detail="Профиль уже создан")
@@ -40,7 +40,7 @@ def profile(user_id: int, profile_data: Profile, user_service: UserService = Dep
 
 
 @router.get("/profile/{user_id}", response_model=Profile)
-def profile(user_id: int, user_service: UserService = Depends(get_user_service)):
+def get_profile(user_id: int, user_service: UserService = Depends(get_user_service)):
     profile = user_service.get_profile(user_id)
     if not profile:
         raise HTTPException(status_code=400, detail="Профиль не создан")
