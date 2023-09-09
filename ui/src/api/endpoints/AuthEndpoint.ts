@@ -28,13 +28,13 @@ export namespace AuthEndpoint {
 
   export const register = async (
     email: string,
-    name: string,
+    fullname: string,
     nickname: string,
     password: string
   ) => {
     const result = await api.post<{ access_token: string }>("/api/auth/register", {
       email,
-      name,
+      fullname,
       nickname,
       password
     });
