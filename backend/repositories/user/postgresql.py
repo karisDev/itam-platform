@@ -29,6 +29,10 @@ class UserRepository:
         self.db.refresh(db_user)
         return db_user
 
+    def get_profile(self, user_id: int):
+        db_profile = self.db.query(Profile).filter_by(user_id=user_id).first()
+        return db_profile
+
     def set_profile(self, user_id: int, profile: Profile):
         db_profile = ProfileDB(user_id, profile)
         self.db.add(db_profile)

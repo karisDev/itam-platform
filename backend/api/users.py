@@ -27,6 +27,12 @@ def get_me(token: Annotated[str, Depends(oauth2_scheme)], auth_service: AuthServ
 def profile(user_id: int, profile_data: Profile, user_service: UserService = Depends(get_user_service)):
     user_service.set_profile(user_id, profile_data)
 
+
+@router.get("/profile", response_model=Profile)
+def profile(user_id: int, user_service: UserService = Depends(get_user_service)):
+    profile = user_service.get_profile(user_id)
+    return profile
+
 # @router.get("/{user_id}", response_model=User)
 # def get_user(user_id: int, user_service: UserService = Depends(get_user_service)):
 #     user = user_service.get_user_by_id(user_id)

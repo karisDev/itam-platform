@@ -56,6 +56,10 @@ class UserService:
     def set_profile(self, user_id: int, profile: Profile):
         self.db.set_profile(user_id, profile)
 
+    def get_profile(self, user_id: int):
+        profile = self.db.get_profile(user_id)
+        return profile
+
 
 def get_user_service(user_repository: UserRepository = Depends(get_user_repository)) -> UserService:
     user_service = UserService(user_repository)
