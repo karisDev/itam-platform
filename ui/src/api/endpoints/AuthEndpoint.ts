@@ -12,9 +12,9 @@ export interface UserAuth {
 }
 
 export interface UserResult {
-  position: string;
-  competence: string;
-  work_experience: string;
+  user_id: number;
+  positions: string[];
+  competences: string[];
   description: string;
   ready_to_move: boolean;
   command_pitch: number;
@@ -22,6 +22,13 @@ export interface UserResult {
   command_interest: number;
   rating: number;
   participation_count: number;
+}
+
+export interface UserUpdate {
+  positions: string[];
+  competences: string[];
+  description: string;
+  ready_to_move: boolean;
 }
 
 export namespace AuthEndpoint {
@@ -62,8 +69,18 @@ export namespace AuthEndpoint {
     return result;
   };
 
+  export const checkAuthFinished = async (id: number) => {
+    const result = await api.get<boolean>(`/api/users/profile/check?user_id=${id}`);
+    return result;
+  };
+
   export const getUser = async (id: number) => {
     const result = await api.get<UserResult>(`/api/users/profile/${id}`);
+    return result;
+  };
+
+  export const updateUser = async (data: UserResult) => {
+    const result = await api.post<string>(`/api/users/profile?user_id=${data.user_id}`, data);
     return result;
   };
 }

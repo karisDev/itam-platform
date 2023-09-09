@@ -34,7 +34,7 @@ export const Input: React.FC<InputProps> = ({
       {multiline ? (
         <textarea
           className={twMerge(
-            "w-full shadow-none box-border focus:shadow-md transition-all duration-200 px-3 h-10 rounded-md border-[1px] border-border-primary placeholder:text-text-secondary text-sm outline-none",
+            "w-full shadow-none box-border h-40 focus:shadow-md transition-colors duration-200 px-3 py-3 rounded-md border-[1px] border-border-primary placeholder:text-text-secondary text-sm outline-none",
             icon ? "pl-14" : "",
             allowClear ? "pr-12" : "",
             appearance === "primary" ? "bg-input-bg hover:bg-input-hover focus:bg-input-hover" : "",
@@ -43,6 +43,8 @@ export const Input: React.FC<InputProps> = ({
           )}
           onChange={(e) => onChange?.(e.target.value)}
           value={rest.value}
+          placeholder={rest.placeholder}
+          name={rest.name}
         />
       ) : (
         <input

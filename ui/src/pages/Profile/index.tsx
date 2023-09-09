@@ -31,7 +31,7 @@ const Profile = observer(() => {
         <div
           className="bg-bg-primary rounded-lg p-4 gap-3 card flex justify-between items-center flex-wrap"
           style={{ gridArea: "stats" }}>
-          <TitleInfo title="Телеграм" info="@kirillkir" />
+          <TitleInfo title="Телеграм" info="@biskwiq" />
           <TitleInfo title="Возраст" info="18 лет" />
         </div>
         <div
