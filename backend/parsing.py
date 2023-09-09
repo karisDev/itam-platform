@@ -12,6 +12,7 @@ options.add_argument("--headless")
 if os.environ.get('release', None):
     options.binary_location = os.environ.get('GOOGLE_CHROME_SHIM', None)
     options.add_argument('--no-sandbox')
+print(options.arguments)
 driver = webdriver.Chrome(options=options)
 
 
