@@ -17,9 +17,6 @@ const get = <T>(path: string, config?: any): Promise<T> =>
         if (error.response) {
           if (error.response.status === 401) {
             removeStoredAuthToken();
-            if (window?.location) {
-              window.location.replace("/login");
-            }
           }
           reject(error.response.data);
         } else {
