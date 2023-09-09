@@ -5,6 +5,9 @@ import asyncio
 import schedule
 
 from backend.api.index import router
+from backend.core.database import get_db
+from backend.models.events import EventDB
+from backend.parsing import collect_data, parse_data
 from backend.settings import settings
 
 app = FastAPI()
@@ -22,8 +25,10 @@ app.include_router(router)
 def root():
     return {"message": "Hello from root!"}
 
+
 @app.on_event("startup")
 async def startup_event():
+    parse_data()
     start_background_task()
     asyncio.create_task(background_task())
 
