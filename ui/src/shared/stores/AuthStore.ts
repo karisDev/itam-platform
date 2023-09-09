@@ -28,6 +28,21 @@ const AuthStore = new (class {
     }
   }
 
+  public async register(email: string, name: string, nickname: string, password: string) {
+    if (!email || !name || !nickname || !password) return false;
+    try {
+      const user = await AuthEndpoint.register(email, name, nickname, password);
+      if (user) {
+        this.user = user;
+        this.authState = "authorized";
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }
+
   public logout() {
     this.user = null;
     this.authState = "anonymous";
