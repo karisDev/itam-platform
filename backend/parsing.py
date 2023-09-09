@@ -1,15 +1,17 @@
 import re
 from pprint import pprint
-
+import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-from backend.core.database import get_db, SessionLocal
+from backend.core.database import SessionLocal
 from backend.models.events import EventDB
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")
-
+if os.environ.get('release', None):
+    options.binary_location = os.environ.get('GOOGLE_CHROME_SHIM', None)
+    options.add_argument('--no-sandbox')
 driver = webdriver.Chrome(options=options)
 
 
@@ -19,9 +21,14 @@ def parse_data():
     db = SessionLocal()
     for event in events:
         db_event = EventDB(event)
+        curr_event = db.query(EventDB).filter_by(title=db_event.title,
+                                                 date_event=db_event.date_event).first()
+        if curr_event:
+            break
         db.add(db_event)
     db.commit()
     db.close()
+
 
 def collect_data():
     try:
@@ -29,11 +36,13 @@ def collect_data():
         source_page = driver.page_source
         driver.close()
         driver.quit()
-    except:
+    except Exception as e:
+        print(e)
         print("Ooops...")
+        return []
 
     soup = BeautifulSoup(source_page, "lxml")
-    hackatons = soup.find_all("div", class_=re.compile("textwrapper"))
+    hackathons = soup.find_all("div", class_=re.compile("textwrapper"))
 
     all_hackathons = []  # Список для хранения данных по каждому хакатону
 
@@ -50,7 +59,7 @@ def collect_data():
             img_url = None  # Если изображение не найдено, добавляем None
         img_urls.append(img_url)
 
-    for hackathon, img_url in zip(hackatons, img_urls):
+    for hackathon, img_url in zip(hackathons, img_urls):
         hackathon_data = {}  # Словарь для хранения данных по текущему хакатону
         title = hackathon.find(class_=re.compile("title")).text.strip()
         hackathon_data["title"] = title

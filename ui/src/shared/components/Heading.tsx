@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import SignOutSvg from "@/assets/signout.svg";
 import AuthStore from "@/stores/AuthStore";
 import { observer } from "mobx-react-lite";
+import Avatar from "@/ui/Avatar";
 
 const NavItem = ({
   children,
@@ -46,7 +47,7 @@ const Heading = observer(() => {
           </NavItem>
         </div>
         <div className="flex items-center gap-3">
-          <div id="avatar" className="w-[40px] h-[40px] rounded-full itam-gradient"></div>
+          <Avatar />
           <div className="flex flex-col">
             <div className="text-sm">Женя Пригожин</div>
             <div className="text-xs text-text-secondary">3000 снарядов</div>
