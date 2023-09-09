@@ -5,7 +5,26 @@ export default {
     extend: {
       colors: {
         bg: {
-          primary: "orange"
+          primary: "#000",
+          secondary: "#121212",
+          tetriary: "#333333"
+        },
+        text: {
+          primary: "#EDEDED",
+          secondary: "#888888"
+        },
+        border: {
+          primary: "#333333"
+        },
+        button: {
+          primary: {
+            bg: "#EDEDED",
+            text: "#0A0A0A"
+          },
+          secondary: {
+            bg: "#0A0A0A",
+            text: "#EDEDED"
+          }
         }
       }
     }

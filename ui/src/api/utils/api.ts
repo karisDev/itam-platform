@@ -3,7 +3,7 @@ import { getStoredAuthToken, removeStoredAuthToken } from "./authToken";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
-const get = (path: string, config?: any) =>
+const get = <T>(path: string, config?: any): Promise<T> =>
   new Promise((resolve, reject) => {
     axios
       .get(path, {
@@ -28,7 +28,7 @@ const get = (path: string, config?: any) =>
       });
   });
 
-const post = (path: string, variables?: any, config?: any) =>
+const post = <T>(path: string, variables?: any, config?: any): Promise<T> =>
   new Promise((resolve, reject) => {
     axios
       .post(path, variables, {
