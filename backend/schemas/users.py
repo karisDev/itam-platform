@@ -6,7 +6,7 @@ from pydantic import BaseModel, EmailStr
 class UserRegister(BaseModel):
     email: EmailStr
     nickname: str
-    fullname: Optional[str] = None
+    fullname: str
     password: str
 
 

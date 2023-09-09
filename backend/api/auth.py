@@ -20,6 +20,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/register", response_model=Token)
 def register(register_request: UserRegister, user_service: UserService = Depends(get_user_service)):
     user = user_service.create_user(register_request)
+    # profile = user_service.create_profile()
     dict_user = jsonable_encoder(user, exclude={"hashed_password"})
     access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
     access_token = create_access_token(
