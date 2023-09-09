@@ -55,14 +55,14 @@ const LoginView = () => {
   };
 
   return (
-    <main className="flex items-center justify-center h-full">
+    <main className="flex items-center justify-center h-full bg-black">
       <div className="flex flex-col items-center">
         <LogoSvg width={93} height={34} />
         <h3 className="mt-8 text-xl">Вход</h3>
         {register ? (
           <form onSubmit={handleRegister} className="flex flex-col gap-4 mt-2">
             <Input name="email" label="Почта" type="email" required className="w-80" />
-            <Input name="nickname" label="Никнейм" required className="w-80" />
+            <Input name="nickname" label="Телеграм" required className="w-80" placeholder="без @" />
             <Input name="name" label="ФИО" required className="w-80" />
             <Input name="password" label="Пароль" type="password" required className="w-80" />
             <Input

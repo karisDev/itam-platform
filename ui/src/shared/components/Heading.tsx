@@ -14,7 +14,7 @@ const NavItem = ({
   to: string;
   currentRoute: string;
 }) => {
-  const isActive = currentRoute === to;
+  const isActive = currentRoute.startsWith(to);
   return (
     <NavLink
       to={to}
@@ -30,7 +30,7 @@ const Heading = observer(() => {
   const currentRoute = useLocation().pathname;
   if (AuthStore.authState === "anonymous" || AuthStore.authState === "loading") return null;
   return (
-    <header className="w-full h-[60px] slide-top flex items-center px-4 bg-bg-primary text-text-primary gap-[24px] border-b-[1px] border-border-primary">
+    <header className="w-full min-h-[60px] slide-top flex items-center px-4 bg-bg-primary text-text-primary gap-[24px] border-b-[1px] border-border-primary">
       <NavLink to={"/"}>
         <LogoSvg width={64} height={24} />
       </NavLink>
@@ -49,8 +49,8 @@ const Heading = observer(() => {
         <div className="flex items-center gap-3">
           <Avatar />
           <div className="flex flex-col">
-            <div className="text-sm">Женя Пригожин</div>
-            <div className="text-xs text-text-secondary">3000 снарядов</div>
+            <div className="text-sm">{AuthStore.auth?.fullname ?? "Хто я?"}</div>
+            <div className="text-xs text-text-secondary">Рейтинг: {AuthStore.user?.rating}</div>
           </div>
           <button onClick={() => AuthStore.logout()}>
             <SignOutSvg width={24} height={24} />

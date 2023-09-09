@@ -1,7 +1,7 @@
 import AuthStore from "@/stores/AuthStore";
 import DialogBase from "@/dialogs/CreateTeam";
 import { Input } from "@/ui/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ComboboxMultiple from "@/ui/ComboboxMultiple";
 import SelectableChip from "./SelectableChip";
 import { observer } from "mobx-react-lite";
@@ -83,13 +83,17 @@ const FinishRegistrationDialog = observer(() => {
     });
   };
 
-  if (AuthStore.authState !== "unfinished") return null;
+  useEffect(() => {
+    if (AuthStore.auth) {
+      setCanceled(false);
+    }
+  }, [AuthStore.auth]);
 
   return (
     <DialogBase
       coolBlur
       width={650}
-      isOpen={!canceled}
+      isOpen={!canceled && AuthStore.authState === "unfinished"}
       confirmText="Я в игре!"
       onCancel={() => setCanceled(true)}
       onConfirm={onFinishRegistration}

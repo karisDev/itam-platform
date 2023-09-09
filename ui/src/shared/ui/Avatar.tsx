@@ -3,7 +3,9 @@ const Avatar = ({ size = 40 }: { size?: number }) => {
     <div
       style={{
         width: size,
-        height: size
+        height: size,
+        minWidth: size,
+        minHeight: size
       }}
       className="rounded-full itam-gradient"
     />
