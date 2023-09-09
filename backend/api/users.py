@@ -28,7 +28,7 @@ def profile(user_id: int, profile_data: Profile, user_service: UserService = Dep
     user_service.set_profile(user_id, profile_data)
 
 
-@router.get("/profile", response_model=Profile)
+@router.get("/profile/{user_id}", response_model=Profile)
 def profile(user_id: int, user_service: UserService = Depends(get_user_service)):
     profile = user_service.get_profile(user_id)
     return profile
