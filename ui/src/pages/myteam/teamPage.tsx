@@ -1,5 +1,6 @@
 import { ITeamMember, TeamPageViewModel } from "./teamPage.vm.ts";
 import { Button } from "@/ui/Button.tsx";
+import TitleInfo from "@/ui/TitleInfo.tsx";
 
 export const TeamPage = () => {
   const vm = new TeamPageViewModel();
@@ -7,7 +8,7 @@ export const TeamPage = () => {
   return (
     <main className="max-w-screen-lg mx-auto grid w-full mt-[48px]"
           style={{ gridTemplateColumns: "1fr 1fr",
-                    gridTemplateRows: "1fr 1fr",
+                    gridTemplateRows: "4fr 7fr",
             gridGap: "14px",
                     gridTemplateAreas: '"members stats" "members last-match"' }}>
       <div className="card flex flex-col gap-6" style={{ gridArea: "members" }}>
@@ -21,15 +22,17 @@ export const TeamPage = () => {
 <Button>Найти участников</Button>
       </div>
       <div className="card flex items-center justify-between gap-6" style={{ gridArea: "stats" }}>
-        <Stats title="Снарядов" value="3000" />
-        <Stats title="Побед" value="3" />
-        <Stats title="Поражений" value="1" />
-        <Stats title="Участий" value="8" />
+        <TitleInfo title="Уровень" info="мидл" />
+        <TitleInfo title="Участников" info="4" />
+        <TitleInfo title="Побед" info="12" />
+        <TitleInfo title="Участий" info="8" />
       </div>
       <div className="card card flex flex-col gap-6" style={{ gridArea: "last-match" }}>
         <h5 className="text-base font-medium">Последние достижения</h5>
-        <div className="flex items-center gap-6">
-          <Stats title="Победа" value="3" />
+        <div className="flex gap-6">
+          <TitleInfo title="Место" info="3" />
+          <TitleInfo title="Хакатон" info="True Tech Hack" />
+          <TitleInfo title="Кейс" info="Построение кратчайшего пути" />
         </div>
       </div>
     </main>
@@ -51,15 +54,3 @@ const TeamMember = (x: ITeamMember) => {
   );
 }
 
-interface IStats {
-  title: string;
-  value: string;
-}
-const Stats = (x: IStats) => {
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="text-sm font-medium text-text-secondary">{x.title}</div>
-      <div className="text-base font-medium">{x.value}</div>
-    </div>
-  );
-}
