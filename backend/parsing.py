@@ -19,9 +19,14 @@ def parse_data():
     db = SessionLocal()
     for event in events:
         db_event = EventDB(event)
+        curr_event = db.query(EventDB).filter_by(title=db_event.title,
+                                                 date_event=db_event.date_event).first()
+        if curr_event:
+            break
         db.add(db_event)
     db.commit()
     db.close()
+
 
 def collect_data():
     try:
