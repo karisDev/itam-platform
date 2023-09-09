@@ -16,3 +16,15 @@ body,
   height: 100%;
   min-height: 100%;
 }
+
+.itam-gradient {
+  background: linear-gradient(
+    136deg,
+    #9fa9d3 1.79%,
+    #aba3d4 19.14%,
+    #d7b8b4 41.45%,
+    #cfcda5 63.76%,
+    #9fdbce 79.62%,
+    #8eb0da 96.97%
+  );
+}
