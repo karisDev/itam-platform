@@ -2,6 +2,12 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    screens: {
+      sm: "512px",
+      md: "768px",
+      lg: "1024px",
+      max: "1280px"
+    },
     extend: {
       colors: {
         bg: {
@@ -11,7 +17,8 @@ export default {
         },
         text: {
           primary: "#EDEDED",
-          secondary: "#888888"
+          secondary: "#888888",
+          link: "#3291FF"
         },
         border: {
           primary: "#333333"
@@ -19,12 +26,21 @@ export default {
         button: {
           primary: {
             bg: "#EDEDED",
-            text: "#0A0A0A"
+            text: "#0A0A0A",
+            hover: "#D1D1D1"
           },
           secondary: {
             bg: "#0A0A0A",
-            text: "#EDEDED"
+            text: "#EDEDED",
+            hover: "#1A1A1A"
           }
+        },
+        input: {
+          bg: "#0A0A0A",
+          hover: "#121212"
+        },
+        status: {
+          error: "#BF5552"
         }
       }
     }

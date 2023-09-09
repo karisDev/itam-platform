@@ -23,7 +23,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "react"],
   rules: {
-    indent: ["error", 2],
+    indent: "off",
     quotes: ["error", "double"],
     semi: ["error", "always"],
     "linebreak-style": "off",
@@ -34,6 +34,7 @@ module.exports = {
         endOfLine: "auto"
       }
     ],
-    "no-unused-vars": "warn"
+    "no-unused-vars": "off",
+    "no-undef": "off"
   }
 };
