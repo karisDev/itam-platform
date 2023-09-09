@@ -5,9 +5,7 @@ import SignOutSvg from "@/assets/signout.svg";
 const NavItem = ({ children, to, currentRoute }: { children: React.ReactNode; to: string; currentRoute: string }) => {
   const isActive = currentRoute === to;
   return (
-    <div className="flex flex-col items-center gap-2">
-    <NavLink to={to} className={`px-[12px] py-[10px] text-sm rounded-[4px] text-text-secondary hover:text-text-primary transition-colors ${isActive ? "bg-bg-tetriary" : ""}`}>{children}</NavLink>
-    </div>
+    <NavLink to={to} className={`px-[12px] py-[10px] text-sm rounded-[4px] text-text-secondary hover:text-text-primary transition-colors ${isActive ? "bg-bg-tetriary text-text-primary" : ""}`}>{children}</NavLink>
   );
 }
 const Heading = () => {
