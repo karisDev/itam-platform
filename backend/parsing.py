@@ -66,6 +66,8 @@ def collect_data():
         hackathon_data["title"] = title
 
         contents = hackathon.find(class_=re.compile("descr")).contents
+        if (len(contents) == 1):
+            contents = contents[0].contents
         res, tmp = [], ''
         for content in contents:
             if isinstance(content, str):
