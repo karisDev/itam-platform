@@ -30,13 +30,12 @@ class AuthService:
         )
         try:
             payload = jwt.decode(token, settings.jwt_secret_key, algorithms=[settings.hash_algorithm])
-            email: str = payload.get("sub")
+            email: str = payload.get("email")
             if email is None:
                 raise credentials_exception
-            token_data = TokenData(email=email)
         except JWTError:
             raise credentials_exception
-        user = self.user_service.get_user_by_email(token_data.email)
+        user = self.user_service.get_user_by_email(email)
         if user is None:
             raise credentials_exception
         return user
