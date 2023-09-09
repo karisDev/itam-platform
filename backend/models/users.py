@@ -23,6 +23,6 @@ class UserDB(Base):
     command_pitch = Column(Integer, default=0)
     command_tasks = Column(Integer, default=0)
     command_interest = Column(Integer, default=0)
-    teamId = Column(Integer, default=None)
+    team_id = Column(Integer, default=None)
     rating = Column(Integer, default=0)
     participation_count = Column(Integer, default=0)

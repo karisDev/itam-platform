@@ -2,6 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 
 from backend.core.security import oauth2_scheme
+from backend.schemas.profiles import Profile
 from backend.schemas.users import UserRegister, User
 from backend.services.auth import AuthService, get_auth_service
 from backend.services.users import get_user_service, UserService
@@ -21,6 +22,10 @@ def get_me(token: Annotated[str, Depends(oauth2_scheme)], auth_service: AuthServ
     user = auth_service.get_current_user(token)
     return user
 
+
+@router.post("/profile")
+def profile(user_id: int, profile_data: Profile, user_service: UserService = Depends(get_user_service)):
+    user_service.set_profile(user_id, profile_data)
 
 # @router.get("/{user_id}", response_model=User)
 # def get_user(user_id: int, user_service: UserService = Depends(get_user_service)):
