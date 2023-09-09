@@ -12,6 +12,5 @@ class Profile(BaseModel):
     command_pitch: int
     command_tasks: int
     command_interest: int
-    teamId: Optional[int]
     rating: int
     participation_count: int

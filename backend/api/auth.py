@@ -20,7 +20,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/register", response_model=Token)
 def register(register_request: UserRegister, user_service: UserService = Depends(get_user_service)):
     user = user_service.create_user(register_request)
-    dict_user = jsonable_encoder(user, exclude={"id", "hashed_password"})
+    dict_user = jsonable_encoder(user, exclude={"hashed_password"})
     access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
     access_token = create_access_token(
         data=dict_user, expires_delta=access_token_expires
@@ -40,7 +40,7 @@ def login(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    dict_user = jsonable_encoder(user, exclude={"id", "hashed_password"})
+    dict_user = jsonable_encoder(user, exclude={"hashed_password"})
     access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
     access_token = create_access_token(
         data=dict_user, expires_delta=access_token_expires
