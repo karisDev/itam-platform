@@ -8,8 +8,8 @@ interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "
   error?: boolean;
   allowClear?: boolean;
   icon?: JSX.Element;
-  rounded?: "lg" | "xl";
   label?: string;
+  multiline?: boolean;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -20,6 +20,7 @@ export const Input: React.FC<InputProps> = ({
   icon,
   allowClear,
   label,
+  multiline,
   ...rest
 }) => {
   return (
@@ -30,18 +31,33 @@ export const Input: React.FC<InputProps> = ({
         </label>
       )}
       {icon && <div className="absolute left-3 pointer-events-none">{icon}</div>}
-      <input
-        className={twMerge(
-          "w-full shadow-none box-border focus:shadow-md transition-all duration-200 px-3 h-10 rounded-md border-[1px] border-border-primary placeholder:text-text-secondary text-sm outline-none",
-          icon ? "pl-14" : "",
-          allowClear ? "pr-12" : "",
-          appearance === "primary" ? "bg-input-bg hover:bg-input-hover focus:bg-input-hover" : "",
-          error ? "border-status-error" : "",
-          rest.disabled ? "bg-input-disabled hover:bg-input-disabled" : ""
-        )}
-        onChange={(e) => onChange?.(e.target.value)}
-        {...rest}
-      />
+      {multiline ? (
+        <textarea
+          className={twMerge(
+            "w-full shadow-none box-border focus:shadow-md transition-all duration-200 px-3 h-10 rounded-md border-[1px] border-border-primary placeholder:text-text-secondary text-sm outline-none",
+            icon ? "pl-14" : "",
+            allowClear ? "pr-12" : "",
+            appearance === "primary" ? "bg-input-bg hover:bg-input-hover focus:bg-input-hover" : "",
+            error ? "border-status-error" : "",
+            rest.disabled ? "bg-input-disabled hover:bg-input-disabled" : ""
+          )}
+          onChange={(e) => onChange?.(e.target.value)}
+          value={rest.value}
+        />
+      ) : (
+        <input
+          className={twMerge(
+            "w-full shadow-none box-border focus:shadow-md transition-all duration-200 px-3 h-10 rounded-md border-[1px] border-border-primary placeholder:text-text-secondary text-sm outline-none",
+            icon ? "pl-14" : "",
+            allowClear ? "pr-12" : "",
+            appearance === "primary" ? "bg-input-bg hover:bg-input-hover focus:bg-input-hover" : "",
+            error ? "border-status-error" : "",
+            rest.disabled ? "bg-input-disabled hover:bg-input-disabled" : ""
+          )}
+          onChange={(e) => onChange?.(e.target.value)}
+          {...rest}
+        />
+      )}
       {allowClear && rest.value && (
         <button
           className="absolute w-5 text-gray-500/50 right-4 focus:outline-none hover:text-gray-500/80"
