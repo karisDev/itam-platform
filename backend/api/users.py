@@ -39,6 +39,8 @@ def profile(user_id: int, profile_data: Profile, user_service: UserService = Dep
 @router.get("/profile/{user_id}", response_model=Profile)
 def profile(user_id: int, user_service: UserService = Depends(get_user_service)):
     profile = user_service.get_profile(user_id)
+    if not profile:
+        raise HTTPException(status_code=400, detail="Профиль не создан")
     return profile
 
 # @router.get("/{user_id}", response_model=User)
