@@ -1,17 +1,16 @@
 import re
 from pprint import pprint
-
+import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-from backend.core.database import get_db, SessionLocal
+from backend.core.database import SessionLocal
 from backend.models.events import EventDB
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")
-options.add_argument('--no-sandbox')
-options.binary_location = GOOGLE_CHROME_PATH
-driver = webdriver.Chrome(execution_path=CHROMEDRIVER_PATH, options=options)
+options.binary_location = os.environ.get('GOOGLE_CHROME_SHIM', None)
+driver = webdriver.Chrome(executable_path="chromedriver", options=options)
 
 
 def parse_data():
