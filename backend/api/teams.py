@@ -15,7 +15,7 @@ router = APIRouter(prefix="/teams", tags=["teams"])
 
 @router.post("/")
 def create_team(token: Annotated[str, Depends(oauth2_scheme)], name: str, db: Session = Depends(get_db),
-        auth_service: AuthService = Depends(get_auth_service)):
+                auth_service: AuthService = Depends(get_auth_service)):
     team = db.query(TeamDB).filter_by(name=name).first()
     if team:
         raise HTTPException(status_code=400, detail="Команда с таким именем уже существует")
@@ -50,7 +50,7 @@ def get_teams(db: Session = Depends(get_db)):
 
 @router.put("/")
 def enter_team(token: Annotated[str, Depends(oauth2_scheme)], name: str, db: Session = Depends(get_db),
-        auth_service: AuthService = Depends(get_auth_service)):
+               auth_service: AuthService = Depends(get_auth_service)):
     db_team = db.query(TeamDB).filter_by(name=name).first()
     if not db_team:
         raise HTTPException(status_code=400, detail="Команда с таким именем уже существует")

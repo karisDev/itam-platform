@@ -33,6 +33,9 @@ def profile(user_id: int, user_service: UserService = Depends(get_user_service))
 
 @router.post("/profile")
 def profile(user_id: int, profile_data: Profile, user_service: UserService = Depends(get_user_service)):
+    profile = user_service.get_profile(user_id)
+    if profile:
+        raise HTTPException(status_code=400, detail="Профиль уже создан")
     user_service.set_profile(user_id, profile_data)
 
 
