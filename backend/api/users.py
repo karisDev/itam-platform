@@ -43,13 +43,14 @@ def profile(user_id: int, user_service: UserService = Depends(get_user_service))
         raise HTTPException(status_code=400, detail="Профиль не создан")
     return profile
 
-# @router.get("/{user_id}", response_model=User)
-# def get_user(user_id: int, user_service: UserService = Depends(get_user_service)):
-#     user = user_service.get_user_by_id(user_id)
-#     if not user:
-#         raise HTTPException(status_code=400, detail="Пользователя не существует")
-#     return user
-#
+
+@router.get("/{user_id}", response_model=User)
+def get_user(user_id: int, user_service: UserService = Depends(get_user_service)):
+    user = user_service.get_user_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=400, detail="Пользователя не существует")
+    return user
+
 #
 # @router.delete("/{user_id}", response_model=bool)
 # def delete_user(user_id: int, user_service: UserService = Depends(get_user_service)):
