@@ -5,7 +5,7 @@ import asyncio
 import schedule
 
 from backend.api.index import router
-# from backend.parsing import collect_data, parse_data
+from backend.parsing import collect_data, parse_data
 from backend.settings import settings
 
 app = FastAPI()
@@ -26,7 +26,7 @@ def root():
 
 @app.on_event("startup")
 async def startup_event():
-    # parse_data()
+    parse_data()
     start_background_task()
     asyncio.create_task(background_task())
 
