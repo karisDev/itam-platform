@@ -5,14 +5,16 @@ import SignOutSvg from "@/assets/signout.svg";
 const NavItem = ({ children, to, currentRoute }: { children: React.ReactNode; to: string; currentRoute: string }) => {
   const isActive = currentRoute === to;
   return (
-    <NavLink to={to} className={`px-[12px] py-[10px] text-sm rounded-[4px] text-text-secondary hover:text-text-primary transition-colors ${isActive ? "bg-bg-tetriary text-text-primary" : ""}`}>{children}</NavLink>
+    <NavLink to={to} className={`px-[12px] py-[10px] text-sm rounded-[4px] ${isActive ? "bg-bg-tetriary text-text-primary" : "text-text-secondary"} hover:text-text-primary transition-colors`}>{children}</NavLink>
   );
 }
 const Heading = () => {
   const currentRoute = useLocation().pathname;
   return (
     <header className="w-full h-[60px] flex items-center px-4 bg-bg-primary text-text-primary gap-[24px] absolute top-0 left-0">
+      <NavLink to={"/"}>
       <LogoSvg width={64} height={24} />
+      </NavLink>
       <div className="flex flex-grow justify-between items-center gap-4">
       <div className="flex items-center gap-2">
         <NavItem to={"/myteam"} currentRoute={currentRoute}>Моя команда</NavItem>
