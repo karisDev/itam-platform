@@ -9,8 +9,10 @@ from backend.models.events import EventDB
 
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")
-options.binary_location = os.environ.get('GOOGLE_CHROME_SHIM', None)
-driver = webdriver.Chrome(executable_path="chromedriver", options=options)
+if os.environ.get('release', None):
+    options.binary_location = os.environ.get('GOOGLE_CHROME_SHIM', None)
+    options.add_argument('--no-sandbox')
+driver = webdriver.Chrome(options=options)
 
 
 def parse_data():
@@ -34,9 +36,10 @@ def collect_data():
         source_page = driver.page_source
         driver.close()
         driver.quit()
-    except:
+    except Exception as e:
+        print(e)
         print("Ooops...")
-        return
+        return []
 
     soup = BeautifulSoup(source_page, "lxml")
     hackathons = soup.find_all("div", class_=re.compile("textwrapper"))
