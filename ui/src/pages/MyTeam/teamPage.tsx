@@ -5,7 +5,7 @@ import { Team, User } from "api/endpoints/TeamEndpoints.ts";
 import TitleInfo from "@/ui/TitleInfo.tsx";
 export const TeamPage = () => {
   const vm = TeamPageViewModel;
-  return !vm.team ? <HaveTeam vm={vm} /> : <NoTeam vm={vm} />;
+  return vm.team ? <HaveTeam vm={vm} /> : <NoTeam vm={vm} />;
 };
 
 const TeamMember = (x: User) => {
@@ -95,6 +95,8 @@ const NoTeam = (x: ITeamPageViewModel) => {
     </div>
   );
 };
+
+
 //component if users have team
 const HaveTeam = (x: ITeamPageViewModel) => {
   return (
@@ -135,18 +137,59 @@ const HaveTeam = (x: ITeamPageViewModel) => {
             <Stats title={"Кейс"} value={"Адаптация фильмов"} />
           </div>
         </div>
-        {/*
         <div className="card flex flex-col gap-6" style={{ gridArea: "invites" }}>
-          <p>инвайты</p>
+          <h5 className="text-xl font-semibold">Приглашения</h5>
+          <div className="flex flex-col gap-4">
+          <InviteCard name={"Виталий Дмитриевич Бутерин"} />
+            <InviteCard name={"Сергей Владимирович Брин"} />
+            <InviteCard name={"Ларри Пейдж"} />
+          </div>
         </div>
         <div className="card flex flex-col gap-6" style={{ gridArea: "requests" }}>
-          <p>заявки</p>
+          <h5 className="text-xl font-semibold">Заявки</h5>
+          <div className="flex flex-col gap-4">
+          <RequestCard name={"Линус Бенедикт Торвальдс"} />
+          </div>
         </div>
-        */}
       </main>
     </div>
   );
 };
+
+
+interface MockInvite {
+  name: string;
+}
+const InviteCard = (x: MockInvite) => {
+  return (
+    <div className="justify-between items-center gap-8 inline-flex">
+      <div className="justify-start items-center gap-3 inline-flex cursor-pointer hover:underline">
+        <div
+          className="w-[24px] h-[24px] rounded-full itam-gradient object-cover"
+        />
+        <div className=" text-sm font-medium truncate ">{x.name}</div>
+      </div>
+      <Button className="px-2 py-1 text-xs h-[30px] w-fit" appearance={"secondary"}>Отозвать</Button>
+    </div>
+  );
+}
+
+const RequestCard = (x: MockInvite) => {
+  return(
+  <div className="justify-between items-center gap-8 inline-flex">
+    <div className="justify-start items-center gap-2 inline-flex cursor-pointer hover:underline">
+      <div
+        className="w-[24px] h-[24px] rounded-full itam-gradient object-cover"
+      />
+      <div className=" text-sm font-medium truncate">{x.name}</div>
+    </div>
+    <div className="flex items-center gap-2">
+    <Button className="px-2 py-1 text-xs h-[30px]">Принять</Button>
+    <Button className="px-2 py-1 text-xs h-[30px]" appearance={"secondary"}>Отклонить</Button>
+    </div>
+  </div>
+  );
+}
 
 interface ITitleInfo {
   title: string;
