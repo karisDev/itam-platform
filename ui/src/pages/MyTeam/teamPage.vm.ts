@@ -23,8 +23,8 @@ class TeamPageViewModel {
   }
 
   public async createTeam(name: string) {
-    const team = await TeamEndpoints.createTeam(name);
-    AuthStore.team = team;
+    await TeamEndpoints.createTeam(name);
+    await AuthStore.fetchTeam();
   }
 
   public myInvitations: Invitation[] = [];

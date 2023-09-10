@@ -12,19 +12,37 @@ import UsersStore from "./users.vm";
 import CheckSvg from "@/assets/check.svg";
 import AuthStore from "@/stores/AuthStore.ts";
 import { TeamEndpoints } from "api/endpoints/TeamEndpoints.ts";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { UserList } from "api/endpoints/AuthEndpoint";
 
 const UsersPage = observer(() => {
   const data = UsersStore.items;
   const [invitedUsersIds, setInvitedUsersIds] = useState<number[]>([]);
+
   const inviteToTeam = async (id: number) => {
     await TeamEndpoints.inviteUser(id);
-    setInvitedUsersIds(prevState => [...prevState, id]);
-    console.log(invitedUsersIds);
-  }
-  const userAlreadyInvited = (id: number) => {
-    return AuthStore.team?.users.some(user => user.id === id);
-  }
+    setInvitedUsersIds((prevState) => [...prevState, id]);
+  };
+
+  const buttonRender = useMemo(() => {
+    return (row: UserList) => (
+      <Button
+        appearance="primary"
+        className="w-fit"
+        disabled={
+          AuthStore.team?.users.some((user) => user.id === row.user.id) ||
+          !AuthStore.team ||
+          invitedUsersIds.includes(row.user.id)
+        }
+        onClick={() => inviteToTeam(row.user.id)}>
+        {AuthStore.team && invitedUsersIds.includes(row.user.id)
+          ? "Приглашен"
+          : AuthStore.team?.users.some((user) => user.id === row.user.id)
+          ? "Уже в команде"
+          : "Пригласить"}
+      </Button>
+    );
+  }, [AuthStore.team, invitedUsersIds]);
 
   return (
     <main className="w-full flex flex-col pb-8">
@@ -91,12 +109,9 @@ const UsersPage = observer(() => {
                     row.profile.ready_to_move ? <CheckSvg className="w-7 h-7 ml-3" /> : null
                 },
                 {
-                    title: "Действия",
-                    render: (row) =>
-                      <Button appearance="primary" className="w-fit" disabled={userAlreadyInvited(row.user.id) || !AuthStore.team || invitedUsersIds.includes(row.user.id) } onClick={() => inviteToTeam(row.user.id)}>
-                        {AuthStore.team && invitedUsersIds.includes(row.user.id) ? "Приглашен" : userAlreadyInvited(row.user.id) ? "Уже в команде" : "Пригласить"}
-                      </Button>
-                  }
+                  title: "Действия",
+                  render: buttonRender
+                }
               ]}
             />
           </div>
