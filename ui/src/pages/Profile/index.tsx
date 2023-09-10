@@ -62,9 +62,12 @@ const Profile = observer(() => {
                 <Avatar size={100} />
               </div>
               <div className="text-text-secondary my-4">
-                {TeamStore.team && <h2>{TeamStore.team.name}</h2>}
-                {!TeamStore.store && <h2>Вы не в команде</h2>}
-                <p>С нами с 24.02.2022</p>
+                {AuthStore.team ? (
+                  <TitleInfo title="Команда" info={AuthStore.team.name} />
+                ) : (
+                  <h2>Без команды</h2>
+                )}
+                <p className="mt-2">С нами с 24.02.2022</p>
                 <p>{user?.ready_to_move ? "Готов" : "Не готов"} к очным хакатонам</p>
                 <div className="flex flex-wrap gap-2 mt-2">
                   {user?.positions.map((p, index) => (

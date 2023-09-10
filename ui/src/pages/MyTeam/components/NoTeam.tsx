@@ -6,37 +6,44 @@ import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import TeamPageViewModel from "../teamPage.vm";
 import { Input } from "@/ui/Input";
+import Avatar from "@/ui/Avatar";
 
 interface ITeamCard {
   team: Team;
 }
 
 const TeamCard = (x: ITeamCard) => {
-  const lvl = ["джуниор", "мидл", "сеньор"];
-  const randomLvl = lvl[Math.floor(Math.random() * lvl.length)];
   return (
-    <div className="card flex flex-col gap-3 w-[356px]">
+    <div className="card flex flex-col gap-4">
       <h6 className="text-xl font-bold">{x.team.name}</h6>
-      <div className="flex items-center gap-6">
-        <TitleInfo title={"Уровень"} info={randomLvl} />
+      <div className="flex justify-between gap-6">
+        <TitleInfo title={"Рейтинг (ср.)"} info={1337} />
         <TitleInfo title={"Участников"} info={x.team.users.length.toString()} />
       </div>
       <div className="flex items-center justify-between gap-2">
-        <div id="team members" className="flex items-center" style={{ gap: "-12px" }}>
+        <div
+          className="flex flex-wrap items-center gap-2 relative"
+          style={{
+            width: x.team.users.length * 20,
+            height: 32
+          }}>
           {x.team.users.map((_, index) => {
             return (
               <div
-                className={
-                  "w-[32px] h-[32px] rounded-full itam-gradient border border-bg-primary object-cover transform hover:scale-110 transition-all"
-                }
-                style={{ transform: `translateX(-${index * 12}px)` }}
                 key={index}
-              />
+                className="absolute"
+                style={{
+                  left: `${index * 20}px`
+                }}>
+                <Avatar size={32} />
+              </div>
             );
           })}
         </div>
-        <Button className="w-fit">Подать заявку</Button>
       </div>
+      <Button className="mt-auto" appearance="secondary">
+        Подать заявку
+      </Button>
     </div>
   );
 };
@@ -100,7 +107,9 @@ export const NoTeam = observer(() => {
             Создать команду
           </Button>
         </div>
-        <section className="flex item-center gap-2">
+        <section
+          className="grid gap-2"
+          style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}>
           {TeamPageViewModel.allTeams.map((x) => {
             return <TeamCard key={x.name} team={x} />;
           })}

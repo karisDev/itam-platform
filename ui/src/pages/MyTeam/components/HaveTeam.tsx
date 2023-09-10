@@ -1,13 +1,14 @@
 import AuthStore from "@/stores/AuthStore";
 import { Button } from "@/ui/Button";
-import { User } from "api/endpoints/TeamEndpoints";
 import { observer } from "mobx-react-lite";
 import { InviteCard, RequestCard, Stats } from "./Cards";
 import MedalSvg from "../assets/medal.svg";
+import usersVm from "../../../pages/Users/users.vm";
 
 interface ITitleInfo {
   title: string;
 }
+
 export const TopHeading = (x: ITitleInfo) => {
   return (
     <div className={"bg-bg-primary w-full min-h-[128px] border-b-[1px] border-border-primary"}>
@@ -18,7 +19,7 @@ export const TopHeading = (x: ITitleInfo) => {
   );
 };
 
-const TeamMember = (x: User) => {
+const TeamMember = (x: { fullname: string; role: string }) => {
   return (
     <div className="justify-between items-center gap-8 inline-flex">
       <div className="justify-start items-center gap-3 inline-flex">
@@ -35,53 +36,66 @@ export const HaveTeam = observer(() => {
   return (
     <div className="flex flex-col w-full h-full">
       <TopHeading title={AuthStore.team?.name ?? "???"} />
-      <main
-        className="max-w-screen-lg mx-auto grid w-full mt-12"
-        style={{
-          gridTemplateColumns: "1fr 1fr",
-          gridTemplateRows: "1fr 1fr 1fr",
-          gridGap: "14px",
-          gridTemplateAreas: `
+      <main className="max-w-screen-lg mx-auto w-full mt-12">
+        <div
+          className="grid"
+          style={{
+            gridTemplateColumns: "1fr 1fr",
+            gridTemplateRows: "1fr 1fr 1fr",
+            gridGap: "14px",
+            gridTemplateAreas: `
             "members stats"
             "members last-match"
             "invites requests"
             `
-        }}>
-        <div className="card flex flex-col gap-6" style={{ gridArea: "members" }}>
-          <h5 className="text-xl font-semibold">Участники</h5>
-          {AuthStore.team?.users.map((x) => {
-            return <TeamMember key={x.id} {...x} />;
-          })}
-          <Button>Найти участников</Button>
-        </div>
-        <div className="card flex items-center justify-between gap-6" style={{ gridArea: "stats" }}>
-          <Stats title="Уровень" value="мидл" />
-          <Stats title="Участников" value="3" />
-          <Stats title="Побед" value="2" />
-          <Stats title="Участий" value="8" />
-        </div>
-        <div className="card card flex flex-col gap-6" style={{ gridArea: "last-match" }}>
-          <h5 className="text-base font-medium flex">
-            Последние достижения <MedalSvg />
-          </h5>
-          <div className="flex gap-6">
-            <Stats title="Место" value={"2"} />
-            <Stats title={"Хакатон"} value={"True Tech Hack"} />
-            <Stats title={"Кейс"} value={"Адаптация фильмов"} />
+          }}>
+          <div className="card flex flex-col gap-6" style={{ gridArea: "members" }}>
+            <h5 className="text-xl font-semibold">Участники</h5>
+            {AuthStore.team?.users.map((x) => {
+              return (
+                <TeamMember
+                  key={x.id}
+                  fullname={x.fullname}
+                  role={
+                    usersVm.items.find((u) => u.user.id === x.id)?.profile.positions.join(", ") ??
+                    "Участник"
+                  }
+                />
+              );
+            })}
+            <Button>Найти участников</Button>
           </div>
-        </div>
-        <div className="card flex flex-col gap-6" style={{ gridArea: "invites" }}>
-          <h5 className="text-xl font-semibold">Приглашения</h5>
-          <div className="flex flex-col gap-4">
-            <InviteCard name={"Виталий Дмитриевич Бутерин"} />
-            <InviteCard name={"Сергей Владимирович Брин"} />
-            <InviteCard name={"Ларри Пейдж"} />
+          <div
+            className="card flex items-center justify-between gap-6"
+            style={{ gridArea: "stats" }}>
+            <Stats title="Уровень" value="мидл" />
+            <Stats title="Участников" value="3" />
+            <Stats title="Побед" value="2" />
+            <Stats title="Участий" value="8" />
           </div>
-        </div>
-        <div className="card flex flex-col gap-6" style={{ gridArea: "requests" }}>
-          <h5 className="text-xl font-semibold">Заявки</h5>
-          <div className="flex flex-col gap-4">
-            <RequestCard name={"Линус Бенедикт Торвальдс"} />
+          <div className="card card flex flex-col gap-6" style={{ gridArea: "last-match" }}>
+            <h5 className="text-base font-medium flex">
+              Последние достижения <MedalSvg />
+            </h5>
+            <div className="flex gap-6">
+              <Stats title="Место" value={"2"} />
+              <Stats title={"Хакатон"} value={"True Tech Hack"} />
+              <Stats title={"Кейс"} value={"Адаптация фильмов"} />
+            </div>
+          </div>
+          <div className="card flex flex-col gap-6" style={{ gridArea: "invites" }}>
+            <h5 className="text-xl font-semibold">Приглашения</h5>
+            <div className="flex flex-col gap-4">
+              <InviteCard name={"Виталий Дмитриевич Бутерин"} />
+              <InviteCard name={"Сергей Владимирович Брин"} />
+              <InviteCard name={"Ларри Пейдж"} />
+            </div>
+          </div>
+          <div className="card flex flex-col gap-6" style={{ gridArea: "requests" }}>
+            <h5 className="text-xl font-semibold">Заявки</h5>
+            <div className="flex flex-col gap-4">
+              <RequestCard name={"Линус Бенедикт Торвальдс"} />
+            </div>
           </div>
         </div>
       </main>
