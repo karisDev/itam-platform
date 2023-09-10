@@ -1,9 +1,10 @@
 import AuthStore from "@/stores/AuthStore";
 import { Button } from "@/ui/Button";
 import { observer } from "mobx-react-lite";
-import { InviteCard, RequestCard, Stats } from "./Cards";
+import { InviteCard, RequestCard, Stats, SubmitEventResult } from "./Cards";
 import MedalSvg from "../assets/medal.svg";
 import usersVm from "../../../pages/Users/users.vm";
+import { useNavigate } from "react-router-dom";
 
 interface ITitleInfo {
   title: string;
@@ -33,15 +34,18 @@ const TeamMember = (x: { fullname: string; role: string }) => {
 
 //component if users have team
 export const HaveTeam = observer(() => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col w-full h-full">
       <TopHeading title={AuthStore.team?.name ?? "???"} />
-      <main className="max-w-screen-lg mx-auto w-full mt-12">
+      <main className="max-w-screen-lg mx-auto w-full px-6 mt-12">
+        <SubmitEventResult title="True Tech Hack" />
         <div
-          className="grid"
+          className="grid mt-3"
           style={{
             gridTemplateColumns: "1fr 1fr",
-            gridTemplateRows: "1fr 1fr 1fr",
+            gridTemplateRows: "auto auto auto",
             gridGap: "14px",
             gridTemplateAreas: `
             "members stats"
@@ -50,7 +54,9 @@ export const HaveTeam = observer(() => {
             `
           }}>
           <div className="card flex flex-col gap-6" style={{ gridArea: "members" }}>
-            <h5 className="text-xl font-semibold">Участники</h5>
+            <div className="flex justify-between">
+              <h5 className="text-xl font-semibold">Участники</h5>
+            </div>
             {AuthStore.team?.users.map((x) => {
               return (
                 <TeamMember
@@ -63,7 +69,9 @@ export const HaveTeam = observer(() => {
                 />
               );
             })}
-            <Button>Найти участников</Button>
+            <Button className="mt-auto" onClick={() => navigate("/users")}>
+              Найти участников
+            </Button>
           </div>
           <div
             className="card flex items-center justify-between gap-6"

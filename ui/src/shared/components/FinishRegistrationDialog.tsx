@@ -6,6 +6,7 @@ import ComboboxMultiple from "@/ui/ComboboxMultiple";
 import SelectableChip from "./SelectableChip";
 import { observer } from "mobx-react-lite";
 import Checkbox from "@/ui/Checkbox";
+import { Section } from "@/ui/Section";
 
 export const Competences = [
   "JavaScript",
@@ -38,24 +39,6 @@ export const Competences = [
   "C++",
   "C#"
 ] as const;
-
-const Section = ({
-  children,
-  title,
-  subtitle
-}: {
-  children: React.ReactNode;
-  title: string;
-  subtitle?: string;
-}) => (
-  <>
-    <div className="py-2">
-      <h3 className="text-xl">{title}</h3>
-      <p className="text-text-secondary mt-1 text-sm">{subtitle}</p>
-    </div>
-    {children}
-  </>
-);
 
 export const Roles = ["Фронтенд", "Бэкенд", "Машинное обучение", "DevOps", "Дизайнер", "Менеджер"];
 

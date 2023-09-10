@@ -18,7 +18,7 @@ export const App = () => {
       <FinishRegistrationDialog />
       <Heading />
       <SwitchTransition>
-        <CSSTransition key={location.key} classNames="fade" timeout={300} unmountOnExit>
+        <CSSTransition key={location.key} classNames="fade" timeout={150} unmountOnExit>
           <Routes location={location}>
             <Route path="/login" element={<LoginView />} />
             <Route
