@@ -37,7 +37,7 @@ def get_teams(db: Session = Depends(get_db)):
     teams = []
     for team in db_teams:
         users = db.query(UserDB).filter_by(team_id=team.id).all()
-        teams.append(Team(name=team.name, users=users))
+        teams.append(Team(id=team.id, name=team.name, users=users))
     return teams
 
 
@@ -125,5 +125,5 @@ def get_team(team_id: int, db: Session = Depends(get_db)):
     if not team:
         raise HTTPException(status_code=400, detail="Команды не существует")
     users = db.query(UserDB).filter_by(team_id=team.id).all()
-    team = Team(name=team.name, users=users)
+    team = Team(id=team_id, name=team.name, users=users)
     return team

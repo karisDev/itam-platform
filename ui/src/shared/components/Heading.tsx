@@ -36,7 +36,7 @@ const Heading = observer(() => {
       </NavLink>
       <div className="flex flex-grow justify-between items-center gap-4">
         <div className="flex items-center gap-2">
-          <NavItem to={"/MyTeam"} currentRoute={currentRoute}>
+          <NavItem to={"/myteam"} currentRoute={currentRoute}>
             Моя команда
           </NavItem>
           <NavItem to={"/profile"} currentRoute={currentRoute}>
