@@ -5,16 +5,15 @@ import { Team, User } from "api/endpoints/TeamEndpoints.ts";
 import TitleInfo from "@/ui/TitleInfo.tsx";
 export const TeamPage = () => {
   const vm = TeamPageViewModel;
-  return vm.team ? <HaveTeam vm={vm} /> : <NoTeam vm={vm} />;
+  return !vm.team ? <HaveTeam vm={vm} /> : <NoTeam vm={vm} />;
 };
 
 const TeamMember = (x: User) => {
   return (
     <div className="justify-between items-center gap-8 inline-flex">
       <div className="justify-start items-center gap-3 inline-flex">
-        <img
+        <div
           className="w-[32px] h-[32px] rounded-full itam-gradient object-cover"
-          alt={x.fullname}
         />
         <div className="text-base font-medium truncate">{x.fullname}</div>
       </div>
@@ -22,7 +21,6 @@ const TeamMember = (x: User) => {
     </div>
   );
 };
-//component if users don't have team
 
 interface ITeamPageViewModel {
   vm: typeof TeamPageViewModel;
@@ -85,14 +83,14 @@ const NoTeam = (x: ITeamPageViewModel) => {
       <section className="flex item-center gap-2">
         {x.vm.allTeams.length > 0
           ? x.vm.allTeams.map((x) => {
-              return <TeamCard team={x} />;
-            })
+            return <TeamCard team={x} />;
+          })
           : //<div className="w-full h-full flex items-center justify-center">
             //  <p className="text-text-secondary">Нет команд</p>
             //</div>
-            mocTeam.map((x) => {
-              return <TeamCard team={x} />;
-            })}
+          mocTeam.map((x) => {
+            return <TeamCard team={x} />;
+          })}
       </section>
     </div>
   );
@@ -106,11 +104,12 @@ const HaveTeam = (x: ITeamPageViewModel) => {
         className="max-w-screen-lg mx-auto grid w-full mt-12"
         style={{
           gridTemplateColumns: "1fr 1fr",
-          gridTemplateRows: "1fr 1fr",
+          gridTemplateRows: "1fr 1fr 1fr",
           gridGap: "14px",
           gridTemplateAreas: `
           "members stats"
           "members last-match"
+          "invites requests"
           `
         }}>
         <div className="card flex flex-col gap-6" style={{ gridArea: "members" }}>
@@ -136,6 +135,14 @@ const HaveTeam = (x: ITeamPageViewModel) => {
             <Stats title={"Кейс"} value={"Адаптация фильмов"} />
           </div>
         </div>
+        {/*
+        <div className="card flex flex-col gap-6" style={{ gridArea: "invites" }}>
+          <p>инвайты</p>
+        </div>
+        <div className="card flex flex-col gap-6" style={{ gridArea: "requests" }}>
+          <p>заявки</p>
+        </div>
+        */}
       </main>
     </div>
   );
@@ -181,7 +188,7 @@ const TeamCard = (x: ITeamCard) => {
       </div>
       <div className="flex items-center justify-between gap-2">
         <div id="team members" className="flex items-center" style={{ gap: "-12px" }}>
-          {x.team.users.map((x, index) => {
+          {x.team.users.map((_, index) => {
             return (
               <div
                 className={
@@ -193,7 +200,7 @@ const TeamCard = (x: ITeamCard) => {
             );
           })}
         </div>
-        <Button className="w-fit">Подаю заявку</Button>
+        <Button className="w-fit">Подать заявку</Button>
       </div>
     </div>
   );
