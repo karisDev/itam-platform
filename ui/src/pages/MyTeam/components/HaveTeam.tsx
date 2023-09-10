@@ -37,8 +37,13 @@ const TeamMember = (x: { fullname: string; role: string }) => {
 //component if users have team
 export const HaveTeam = observer(() => {
   const navigate = useNavigate();
-  const getAvgRating = () => UsersStore.items.filter((x) => x.user.team_id === AuthStore.auth?.team_id).reduce((acc, x) => acc + x.profile.rating, 0) / UsersStore.items.length;
-
+  const sumRating = () => UsersStore.items.filter((x) => x.user.team_id === AuthStore.auth?.team_id).reduce((acc, x) => acc + x.profile.rating, 0);
+  const getUsersCount = () => UsersStore.items.filter((x) => x.user.team_id === AuthStore.auth?.team_id).length;
+  const getAvgRating = () => {
+    const rating = sumRating();
+    if (rating === 0) return 0;
+    return rating / getUsersCount();
+  }
   HackathonsViewModel;
   return (
     <div className="flex flex-col w-full pb-4">
