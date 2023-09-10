@@ -8,7 +8,7 @@ export interface UserAuth {
   fullname: string;
   nickname: string;
   role: string;
-  team_id: string;
+  team_id: number | null;
 }
 
 export interface UserResult {

@@ -6,7 +6,7 @@ import LoginView from "../pages/Login";
 import PrivateRoute from "@/hoc/PrivateRoute";
 import Heading from "@/components/Heading";
 import Profile from "../pages/Profile";
-import { TeamPage } from "../pages/myteam/teamPage";
+import { TeamPage } from "../pages/MyTeam/teamPage";
 import FinishRegistrationDialog from "@/components/FinishRegistrationDialog";
 import Hackathons from "../pages/Hackathons";
 
