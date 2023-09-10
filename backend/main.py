@@ -5,6 +5,7 @@ import asyncio
 import schedule
 
 from backend.api.index import router
+from backend.bot import bot
 from backend.parsing import collect_data, parse_data
 from backend.settings import settings
 
@@ -18,7 +19,6 @@ app.add_middleware(
 )
 app.include_router(router)
 
-
 @app.get("/")
 def root():
     return {"message": "Hello from root!"}
@@ -27,12 +27,15 @@ def root():
 @app.on_event("startup")
 async def startup_event():
     parse_data()
+    print(1)
+    bot.get_users()
     start_background_task()
     asyncio.create_task(background_task())
 
 
 def start_background_task():
-    schedule.every(1).hour.do(parse_data)  # Запускать каждый час
+    schedule.every(1).hour.do(parse_data)
+    schedule.every(1).hour.do(bot.get_users)# Запускать каждый час
 
 
 async def background_task():

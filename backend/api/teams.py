@@ -9,7 +9,6 @@ from backend.models import UserDB, InvitationDB
 from backend.models.teams import TeamDB
 from backend.schemas.invitations import Invitation
 from backend.schemas.teams import Team
-from backend.schemas.users import User
 from backend.services.auth import AuthService, get_auth_service
 
 router = APIRouter(prefix="/teams", tags=["teams"])
@@ -95,9 +94,9 @@ def respond_to_invite(invitation_id: int, status: bool, db: Session = Depends(ge
     db.commit()
 
 
-@router.get("/{name}", response_model=Team)
-def get_team(name: str, db: Session = Depends(get_db)):
-    team = db.query(TeamDB).filter_by(name=name).first()
+@router.get("/{team_id}", response_model=Team)
+def get_team(team_id: int, db: Session = Depends(get_db)):
+    team = db.query(TeamDB).filter_by(id=team_id).first()
     if not team:
         raise HTTPException(status_code=400, detail="Команды не существует")
     users = db.query(UserDB).filter_by(team_id=team.id).all()

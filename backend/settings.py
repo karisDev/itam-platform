@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     hash_algorithm: str
     access_token_expire_minutes: int
 
+    bot_token: str
+
 
 settings = Settings(
     _env_file=f"{os.path.dirname(os.path.abspath(__file__))}/.env",
