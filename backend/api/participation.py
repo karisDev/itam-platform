@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -37,25 +39,6 @@ def get_all_participation(team_id: int, db: Session = Depends(get_db)):
     return participation
 
 
-@router.get("/{participation_id}", response_model=Participation)
-def get_one_participation(participation_id: int, db: Session = Depends(get_db)):
-    participation = db.query(ParticipationDB).filter_by(id=participation_id).first()
-    return participation
-
-
-@router.put("/{participation_id}")
-def finish_participation(finished: ParticipationFinish, db: Session = Depends(get_db)):
-    participation = db.query(ParticipationDB).filter_by(id=finished.participation_id).first()
-    if not participation:
-        raise HTTPException(status_code=400, detail="Такой заявки не существует")
-    participation.status = "На проверке модератором"
-    participation.repo_url = finished.repo_url
-    participation.description = finished.description
-    participation.place = finished.place
-    db.add(participation)
-    db.commit()
-
-
 @router.post("/rate")
 def rate_teammates(token: Annotated[str, Depends(oauth2_scheme)],
                    participation_id: int,
@@ -75,7 +58,9 @@ def rate_teammates(token: Annotated[str, Depends(oauth2_scheme)],
         teammate.command_tasks += commend.command_tasks
         teammate.command_interest += commend.command_interest
         db.add(teammate)
-    participation.rates_from_ids.append(user.id)
+    rates = deepcopy(participation.rates_from_ids)
+    rates.append(user.id)
+    participation.rates_from_ids = rates
     db.add(participation)
     db.commit()
 
@@ -90,3 +75,22 @@ def was_rated(token: Annotated[str, Depends(oauth2_scheme)],
     if not participation:
         raise HTTPException(status_code=400, detail="События не существует")
     return participation.rates_from_ids and user.id in participation.rates_from_ids
+
+
+@router.get("/{participation_id}", response_model=Participation)
+def get_one_participation(participation_id: int, db: Session = Depends(get_db)):
+    participation = db.query(ParticipationDB).filter_by(id=participation_id).first()
+    return participation
+
+
+@router.put("/{participation_id}")
+def finish_participation(finished: ParticipationFinish, db: Session = Depends(get_db)):
+    participation = db.query(ParticipationDB).filter_by(id=finished.participation_id).first()
+    if not participation:
+        raise HTTPException(status_code=400, detail="Такой заявки не существует")
+    participation.status = "На проверке модератором"
+    participation.repo_url = finished.repo_url
+    participation.description = finished.description
+    participation.place = finished.place
+    db.add(participation)
+    db.commit()
