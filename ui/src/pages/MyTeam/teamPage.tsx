@@ -3,6 +3,11 @@ import MedalSvg from "./assets/medal.svg";
 import TeamPageViewModel from "./teamPage.vm.ts";
 import { Team, User } from "api/endpoints/TeamEndpoints.ts";
 import TitleInfo from "@/ui/TitleInfo.tsx";
+import { useState } from "react";
+import { observer } from "mobx-react-lite";
+import DialogBase from "@/dialogs/DialogBase.tsx";
+import { Input } from "@/ui/Input.tsx";
+
 export const TeamPage = () => {
   const vm = TeamPageViewModel;
   return vm.team ? <HaveTeam vm={vm} /> : <NoTeam vm={vm} />;
@@ -12,9 +17,7 @@ const TeamMember = (x: User) => {
   return (
     <div className="justify-between items-center gap-8 inline-flex">
       <div className="justify-start items-center gap-3 inline-flex">
-        <div
-          className="w-[32px] h-[32px] rounded-full itam-gradient object-cover"
-        />
+        <div className="w-[32px] h-[32px] rounded-full itam-gradient object-cover" />
         <div className="text-base font-medium truncate">{x.fullname}</div>
       </div>
       <div className=" text-sm font-medium text-text-secondary">{x.role}</div>
@@ -70,32 +73,81 @@ const mocTeam: Team[] = [
     ]
   }
 ];
-const NoTeam = (x: ITeamPageViewModel) => {
-  return (
-    <div className="max-w-screen-lg mx-auto mt-12 w-full h-full flex flex-col gap-6">
-      <div className="card w-full flex flex-col">
-        <h5 className="text-xl font-semibold">Вы еще не в команде</h5>
-        <div className="flex items-center justify-between gap-6">
-          <p className="text-text-secondary">Присоединяйтесь к команде или создайте свою</p>
-          <Button className="w-fit">Создать команду</Button>
-        </div>
-      </div>
-      <section className="flex item-center gap-2">
-        {x.vm.allTeams.length > 0
-          ? x.vm.allTeams.map((x) => {
-            return <TeamCard team={x} />;
-          })
-          : //<div className="w-full h-full flex items-center justify-center">
-            //  <p className="text-text-secondary">Нет команд</p>
-            //</div>
-          mocTeam.map((x) => {
-            return <TeamCard team={x} />;
-          })}
-      </section>
-    </div>
-  );
-};
+const NoTeam = observer((x: ITeamPageViewModel) => {
+  const [showCreateTeamDialog, setShowCreateTeamDialog] = useState(false);
+  const [teamName, setTeamName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
+  const onCreateTeam = async () => {
+    if (loading) return;
+    if (!teamName) {
+      setError(true);
+      return;
+    }
+    setLoading(true);
+    setError(false);
+
+    try {
+      await TeamPageViewModel.createTeam(teamName);
+      setShowCreateTeamDialog(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onCancel = () => {
+    if (loading) return;
+
+    setTeamName("");
+
+    setShowCreateTeamDialog(false);
+  };
+
+  return (
+    <>
+      <DialogBase
+        isOpen={showCreateTeamDialog}
+        confirmText="Создать"
+        title="Новая команда"
+        width={500}
+        onCancel={onCancel}
+        onConfirm={onCreateTeam}>
+        <Input
+          error={error}
+          label="Название команды"
+          placeholder="ЧПК МИСиС"
+          value={teamName}
+          disabled={loading}
+          onChange={(v) => setTeamName(v)}
+        />
+      </DialogBase>
+      <div className="max-w-screen-lg mx-auto mt-12 w-full h-full flex flex-col gap-6">
+        <div className="card flex items-center">
+          <div className="flex flex-col">
+            <h5 className="text-xl font-semibold">Вы еще не в команде</h5>
+            <p className="text-text-secondary">Присоединяйтесь к команде или создайте свою</p>
+          </div>
+          <Button className="w-fit ml-auto" onClick={() => setShowCreateTeamDialog(true)}>
+            Создать команду
+          </Button>
+        </div>
+        <section className="flex item-center gap-2">
+          {x.vm.allTeams.length > 0
+            ? x.vm.allTeams.map((x) => {
+                return <TeamCard team={x} />;
+              })
+            : //<div className="w-full h-full flex items-center justify-center">
+              //  <p className="text-text-secondary">Нет команд</p>
+              //</div>
+              mocTeam.map((x) => {
+                return <TeamCard team={x} />;
+              })}
+        </section>
+      </div>
+    </>
+  );
+});
 
 //component if users have team
 const HaveTeam = (x: ITeamPageViewModel) => {
@@ -140,7 +192,7 @@ const HaveTeam = (x: ITeamPageViewModel) => {
         <div className="card flex flex-col gap-6" style={{ gridArea: "invites" }}>
           <h5 className="text-xl font-semibold">Приглашения</h5>
           <div className="flex flex-col gap-4">
-          <InviteCard name={"Виталий Дмитриевич Бутерин"} />
+            <InviteCard name={"Виталий Дмитриевич Бутерин"} />
             <InviteCard name={"Сергей Владимирович Брин"} />
             <InviteCard name={"Ларри Пейдж"} />
           </div>
@@ -148,14 +200,13 @@ const HaveTeam = (x: ITeamPageViewModel) => {
         <div className="card flex flex-col gap-6" style={{ gridArea: "requests" }}>
           <h5 className="text-xl font-semibold">Заявки</h5>
           <div className="flex flex-col gap-4">
-          <RequestCard name={"Линус Бенедикт Торвальдс"} />
+            <RequestCard name={"Линус Бенедикт Торвальдс"} />
           </div>
         </div>
       </main>
     </div>
   );
 };
-
 
 interface MockInvite {
   name: string;
@@ -164,32 +215,32 @@ const InviteCard = (x: MockInvite) => {
   return (
     <div className="justify-between items-center gap-8 inline-flex">
       <div className="justify-start items-center gap-3 inline-flex cursor-pointer hover:underline">
-        <div
-          className="w-[24px] h-[24px] rounded-full itam-gradient object-cover"
-        />
+        <div className="w-[24px] h-[24px] rounded-full itam-gradient object-cover" />
         <div className=" text-sm font-medium truncate ">{x.name}</div>
       </div>
-      <Button className="px-2 py-1 text-xs h-[30px] w-fit" appearance={"secondary"}>Отозвать</Button>
+      <Button className="px-2 py-1 text-xs h-[30px] w-fit" appearance={"secondary"}>
+        Отозвать
+      </Button>
     </div>
   );
-}
+};
 
 const RequestCard = (x: MockInvite) => {
-  return(
-  <div className="justify-between items-center gap-8 inline-flex">
-    <div className="justify-start items-center gap-2 inline-flex cursor-pointer hover:underline">
-      <div
-        className="w-[24px] h-[24px] rounded-full itam-gradient object-cover"
-      />
-      <div className=" text-sm font-medium truncate">{x.name}</div>
+  return (
+    <div className="justify-between items-center gap-8 inline-flex">
+      <div className="justify-start items-center gap-2 inline-flex cursor-pointer hover:underline">
+        <div className="w-[24px] h-[24px] rounded-full itam-gradient object-cover" />
+        <div className=" text-sm font-medium truncate">{x.name}</div>
+      </div>
+      <div className="flex items-center gap-2">
+        <Button className="px-2 py-1 text-xs h-[30px]">Принять</Button>
+        <Button className="px-2 py-1 text-xs h-[30px]" appearance={"secondary"}>
+          Отклонить
+        </Button>
+      </div>
     </div>
-    <div className="flex items-center gap-2">
-    <Button className="px-2 py-1 text-xs h-[30px]">Принять</Button>
-    <Button className="px-2 py-1 text-xs h-[30px]" appearance={"secondary"}>Отклонить</Button>
-    </div>
-  </div>
   );
-}
+};
 
 interface ITitleInfo {
   title: string;

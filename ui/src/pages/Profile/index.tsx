@@ -7,6 +7,7 @@ import SelectableChip from "@/components/SelectableChip";
 import { useState } from "react";
 import DialogBase from "@/dialogs/DialogBase";
 import LetterSvg from "./assets/letter.svg";
+import TeamStore from "../MyTeam/teamPage.vm";
 
 const Profile = observer(() => {
   const [showAchievmentDialog, setShowAchievmentDialog] = useState(false);
@@ -19,7 +20,7 @@ const Profile = observer(() => {
         <div className="max-w-screen-lg mx-auto w-full px-6">
           <div className="relative flex h-[100px] mb-8">
             <div className="itam-gradient w-full h-full blur-md absolute left-0 right-0"></div>
-            <div className="flex card items-center gap-4 absolute left-0 right-0">
+            <div className="flex card items-center gap-4 absolute left-0 right-0 max-h-[100px]">
               <LetterSvg className="w-12 h-12" />
               <div className="flex flex-col">
                 <h2 className="text-2xl">Приглашение в команду &quot;ЧПК МИСиС&quot;</h2>
@@ -27,7 +28,7 @@ const Profile = observer(() => {
                   <b>Кирилл Киреев Дмитриевич</b> отправил вам приглашение в команду
                 </p>
               </div>
-              <div className="flex ml-auto gap-3">
+              <div className="grid ml-auto gap-3 md:grid-cols-2 grid-cols-1">
                 <Button appearance="secondary">Отказаться</Button>
                 <Button>Принять</Button>
               </div>
@@ -61,6 +62,8 @@ const Profile = observer(() => {
                 <Avatar size={100} />
               </div>
               <div className="text-text-secondary my-4">
+                {TeamStore.team && <h2>{TeamStore.team.name}</h2>}
+                {!TeamStore.store && <h2>Вы не в команде</h2>}
                 <p>С нами с 24.02.2022</p>
                 <p>{user?.ready_to_move ? "Готов" : "Не готов"} к очным хакатонам</p>
                 <div className="flex flex-wrap gap-2 mt-2">
@@ -69,7 +72,9 @@ const Profile = observer(() => {
                   ))}
                 </div>
               </div>
-              <Button className="mt-auto gap-2">Позвать в команду</Button>
+              <Button disabled className="mt-auto gap-2">
+                Пригласить в команду
+              </Button>
             </section>
             <section
               className="bg-bg-primary rounded-lg p-4 gap-4 card flex justify-between flex-col"
