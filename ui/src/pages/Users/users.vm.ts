@@ -11,6 +11,10 @@ class UsersStore {
   private async init() {
     this.items = await AuthEndpoint.getUsers();
   }
+
+  public async sendInvite(userId: number) {
+    // if (this.items)
+  }
 }
 
 export default new UsersStore();

@@ -17,7 +17,7 @@ const testEvent = {
 };
 
 const MARKDOWN = `
-## Присоединайтесь к AI News Hack – хакатону по разработке ИИ-сервисов! 
+## Присоединяйтесь к AI News Hack – хакатону по разработке ИИ-сервисов! 
 
 1. AI Open News приглашает вас на хакатон по искусственному интеллекту. Компания создаёт бота, который помогает избавиться от информационного шума. Вместо чтения большого количества каналов, подписчики бота получают все главные новости в одном месте.
 
@@ -61,14 +61,17 @@ const HackCard = ({ item }: { item: EventResult }) => {
         </div>
       </div>
       <DialogBase
-        confirmText="Позвать команду"
+        confirmText="Записаться"
         onConfirm={() => setExpanded(false)}
         title={hack?.title ?? "Хакатон"}
         subtitle={"Организатор: AI Open News"}
         isOpen={expanded}
         width={700}
         bottom={
-          <Button appearance="secondary" className="w-fit self-end">
+          <Button
+            appearance="secondary"
+            className="w-fit self-end"
+            onClick={() => window.open("https://codenrock.com/contests/ai-news#/", "_blank")}>
             Посетить сайт
             <LinkSvg className="ml-2 w-5 h-5" />
           </Button>
