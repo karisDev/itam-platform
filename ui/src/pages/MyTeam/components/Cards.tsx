@@ -3,6 +3,7 @@ import { Button } from "@/ui/Button";
 import { Input } from "@/ui/Input";
 import { Section } from "@/ui/Section";
 import { useState } from "react";
+import TeamPageViewModel from "../teamPage.vm";
 
 interface MockInvite {
   name: string;
@@ -54,6 +55,7 @@ export const Stats = (x: IStats) => {
 
 interface EventProps {
   title: string;
+  participationId: number;
 }
 
 export const SubmitEventResult: React.FC<EventProps> = (x) => {
@@ -73,7 +75,12 @@ export const SubmitEventResult: React.FC<EventProps> = (x) => {
     setError(false);
     setLoading(true);
     try {
-      // TeamPageViewModel.submitResult();
+      await TeamPageViewModel.finishParticipation({
+        participation_id: x.participationId,
+        place,
+        repo_url: repository,
+        description: results
+      });
       setSubmitResultExpanded(false);
     } catch {
       setError(true);
@@ -92,9 +99,9 @@ export const SubmitEventResult: React.FC<EventProps> = (x) => {
 
   return (
     <>
-      <div className="relative flex h-[100px] mb-8">
+      <div className="relative flex h-[150px] mb-8">
         <div className="itam-gradient w-full h-full blur-md absolute left-0 right-0"></div>
-        <div className="flex card items-center gap-4 absolute left-0 right-0 max-h-[100px]">
+        <div className="flex card items-center gap-4 absolute left-0 right-0 min-h-[150px] max-h-[150px]">
           <div className="flex flex-col">
             <h2 className="text-2xl">{x.title}</h2>
             <p className="text-text-secondary text-lg">Отправить результаты хакатона</p>

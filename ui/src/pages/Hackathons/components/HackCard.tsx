@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useNavigate } from "react-router-dom";
+import TeamStore from "src/pages/MyTeam/teamPage.vm";
 
 const testEvent = {
   id: 1,

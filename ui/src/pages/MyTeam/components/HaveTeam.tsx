@@ -5,6 +5,7 @@ import { InviteCard, RequestCard, Stats, SubmitEventResult } from "./Cards";
 import MedalSvg from "../assets/medal.svg";
 import usersVm from "../../../pages/Users/users.vm";
 import { useNavigate } from "react-router-dom";
+import HackathonsViewModel from "../../../pages/Hackathons/hackathons.vm";
 
 interface ITitleInfo {
   title: string;
@@ -35,12 +36,20 @@ const TeamMember = (x: { fullname: string; role: string }) => {
 //component if users have team
 export const HaveTeam = observer(() => {
   const navigate = useNavigate();
-
+  HackathonsViewModel;
   return (
     <div className="flex flex-col w-full pb-4">
       <TopHeading title={AuthStore.team?.name ?? "???"} />
       <main className="max-w-screen-lg mx-auto w-full px-6 mt-12">
-        <SubmitEventResult title="True Tech Hack" />
+        {AuthStore.participations
+          ?.filter((p) => p.status === "В процессе участия")
+          .map((p) => (
+            <SubmitEventResult
+              key={p.id}
+              participationId={p.id}
+              title={HackathonsViewModel.items.find((i) => i.id === p.event_id)?.title ?? ""}
+            />
+          ))}
         <div
           className="grid mt-3"
           style={{

@@ -26,7 +26,7 @@ const Invite = (x: IInviteProps) => {
       <div className="flex card items-center gap-4 absolute left-0 right-0 max-h-[100px]">
         <LetterSvg className="w-12 h-12" />
         <div className="flex flex-col">
-          <h2 className="text-2xl">Приглашение в команду &quot;{x.team.name}&quot;</h2>
+          <h2 className="text-2xl">Приглашение в команду &quot;{x.team.team_name}&quot;</h2>
           <p className="text-text-secondary">
             <b>{x.team.user.fullname}</b> отправил вам приглашение в команду
           </p>
@@ -50,9 +50,7 @@ const Profile = observer(() => {
     <>
       <main className="w-full flex flex-col pb-8 mt-12">
         <div className="max-w-screen-lg mx-auto w-full px-6">
-          {TeamStore.myInvitations.map((team) => (
-            <Invite key={team.id} team={team} />
-          ))}
+          {AuthStore.invitations?.map((team) => <Invite key={team.id} team={team} />)}
           <div
             className="grid gap-3"
             style={{

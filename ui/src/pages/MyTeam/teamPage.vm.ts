@@ -1,10 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { Team, TeamEndpoints, User } from "api/endpoints/TeamEndpoints.ts";
 import AuthStore from "@/stores/AuthStore.ts";
+import { ParticipationEndpoint, ParticipationUpdate } from "api/endpoints/ParticipationEndpoint";
 
 export interface Invitation {
   id: number;
-  name: string;
+  team_name: string;
   user: User;
   status: boolean;
   date: string;
@@ -19,7 +20,6 @@ class TeamPageViewModel {
   public allTeams: Team[] = [];
   private async _init() {
     this.allTeams = await TeamEndpoints.getTeams();
-    this.myInvitations = await TeamEndpoints.getMyInvitations();
   }
 
   public async createTeam(name: string) {
@@ -27,10 +27,14 @@ class TeamPageViewModel {
     await AuthStore.fetchTeam();
   }
 
-  public myInvitations: Invitation[] = [];
   public async respondToInvitation(invitation_id: number, accept: boolean) {
     await TeamEndpoints.respondToInvitation(invitation_id, accept);
-    this.myInvitations = await TeamEndpoints.getMyInvitations();
+    await AuthStore.fetchInvitations();
+  }
+
+  public async finishParticipation(data: ParticipationUpdate) {
+    await ParticipationEndpoint.finish(data);
+    await AuthStore.fetchParticipations();
   }
 }
 

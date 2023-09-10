@@ -5,10 +5,17 @@ export interface Participation {
   team_id: number;
   event_id: number;
   place: string;
-  status: string;
+  status: "В процессе участия" | "На проверке модератором" | "Участие завершено";
   repo_url: string;
   description: string;
   added_to_rating: number;
+}
+
+export interface ParticipationUpdate {
+  participation_id: number;
+  place: string;
+  repo_url: string;
+  description: string;
 }
 
 export namespace ParticipationEndpoint {
@@ -18,7 +25,12 @@ export namespace ParticipationEndpoint {
   };
 
   export const getList = async (teamId: number) => {
-    const result = await api.get<Participation[]>(`/api/participation?team_id=${teamId}`);
+    const result = await api.get<Participation[]>(`/api/participation/?team_id=${teamId}`);
+    return result;
+  };
+
+  export const finish = async (data: ParticipationUpdate) => {
+    const result = await api.put<unknown>(`/api/participation/${data.participation_id}/`, data);
     return result;
   };
 }

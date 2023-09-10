@@ -1,3 +1,4 @@
+import AuthStore from "@/stores/AuthStore";
 import { AuthEndpoint, UserList } from "api/endpoints/AuthEndpoint";
 import { makeAutoObservable } from "mobx";
 
@@ -5,15 +6,11 @@ class UsersStore {
   public items: UserList[] = [];
   constructor() {
     makeAutoObservable(this);
-    void this.init();
   }
 
-  private async init() {
-    this.items = await AuthEndpoint.getUsers();
-  }
-
-  public async sendInvite(userId: number) {
-    // if (this.items)
+  public async init() {
+    const result = await AuthEndpoint.getUsers();
+    this.items = result.filter((x) => x.user.id !== AuthStore.auth?.id);
   }
 }
 
