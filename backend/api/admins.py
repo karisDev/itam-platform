@@ -23,7 +23,7 @@ def get_participation_for_check(db: Session = Depends(get_db)):
     return participation
 
 
-@router.post("/participation")
+@router.post("/finish_participation")
 def finish_participation(participation_id: int, points: int, db: Session = Depends(get_db)):
     participation = db.query(ParticipationDB).filter_by(id=participation_id).first()
     participation.added_to_rating = points
@@ -38,7 +38,7 @@ def finish_participation(participation_id: int, points: int, db: Session = Depen
             bot.send_message(tg_user.chat_id, "Модератор принял вашу заявку")
 
 
-@router.post("/participation")
+@router.post("/decline_participation")
 def decline_participation(participation_id: int, db: Session = Depends(get_db)):
     participation = db.query(ParticipationDB).filter_by(id=participation_id).first()
     participation.status = "В процессе участия"
