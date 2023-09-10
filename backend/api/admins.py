@@ -5,7 +5,7 @@ from starlette.background import BackgroundTasks
 from backend.bot import bot
 from backend.core.database import get_db
 from backend.dependencies.role_checker import RoleChecker
-from backend.models import ParticipationDB, UserDB, TelegramDB
+from backend.models import ParticipationDB, UserDB, TelegramDB, ProfileDB
 from backend.schemas.participation import Participation
 
 allow_create_resource = RoleChecker(["ADMIN"])
@@ -30,9 +30,12 @@ async def finish_participation(participation_id: int, points: int, db: Session =
     participation.added_to_rating = points
     participation.status = "Участие завершено"
     db.add(participation)
-    db.commit()
     users = db.query(UserDB).filter_by(team_id=participation.team_id).all()
     for user in users:
+        profile = db.query(ProfileDB).filter_by(user_id=user.id).first()
+        profile.rating += points
+        db.add(profile)
+        db.commit()
         tg_user = db.query(TelegramDB).filter_by(username=user.nickname).first()
         print("admin", tg_user)
         if tg_user:

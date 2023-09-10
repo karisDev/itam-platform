@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Date, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Date, Boolean, JSON
 from sqlalchemy.sql import func
 
 from .base import Base
@@ -15,4 +15,5 @@ class ParticipationDB(Base):
     repo_url = Column(String)
     description = Column(String)
     added_to_rating = Column(Integer)
+    rates_from_ids = Column(JSON, default=[])
 

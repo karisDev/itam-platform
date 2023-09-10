@@ -3,6 +3,13 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+class Commend(BaseModel):
+    user_id: int
+    command_pitch: int
+    command_tasks: int
+    command_interest: int
+
+
 class Profile(BaseModel):
     user_id: int
     positions: list
