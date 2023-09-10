@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from backend.bot import bot
 from backend.core.database import get_db
 from backend.core.security import oauth2_scheme
-from backend.models import UserDB, InvitationDB, TelegramDB
+from backend.models import UserDB, InvitationDB, TelegramDB, ProfileDB
 from backend.models.teams import TeamDB
 from backend.schemas.invitations import Invitation
 from backend.schemas.teams import Team
@@ -37,7 +37,8 @@ def get_teams(db: Session = Depends(get_db)):
     teams = []
     for team in db_teams:
         users = db.query(UserDB).filter_by(team_id=team.id).all()
-        teams.append(Team(id=team.id, name=team.name, users=users))
+        rating = get_team_rating(users, db)
+        teams.append(Team(id=team.id, rating=rating, name=team.name, users=users))
     return teams
 
 
@@ -125,5 +126,16 @@ def get_team(team_id: int, db: Session = Depends(get_db)):
     if not team:
         raise HTTPException(status_code=400, detail="Команды не существует")
     users = db.query(UserDB).filter_by(team_id=team.id).all()
-    team = Team(id=team_id, name=team.name, users=users)
+    rating = get_team_rating(users, db)
+    team = Team(id=team_id, rating=rating, name=team.name, users=users)
     return team
+
+def get_team_rating(users: list[UserDB], db: Session = Depends(get_db)):
+    rating, count = 0, 0
+    for user in users:
+        profile = db.query(ProfileDB).filter_by(user_id=user.id).first()
+        rating += profile.rating
+        count += 1
+    if count:
+        rating /= count
+    return rating
