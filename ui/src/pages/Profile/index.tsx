@@ -7,33 +7,52 @@ import SelectableChip from "@/components/SelectableChip";
 import { useState } from "react";
 import DialogBase from "@/dialogs/DialogBase";
 import LetterSvg from "./assets/letter.svg";
-import TeamStore from "../MyTeam/teamPage.vm";
+import TeamStore, { Invitation } from "../MyTeam/teamPage.vm";
+import { TeamEndpoints } from "api/endpoints/TeamEndpoints.ts";
+
+interface IInviteProps {
+  team: Invitation;
+}
+const Invite = (x: IInviteProps) => {
+  const handleAccept = async () => {
+    await TeamEndpoints.RespondToInvitation(x.team.id, true);
+  }
+  const handleDecline = async () => {
+    await TeamEndpoints.RespondToInvitation(x.team.id, false);
+  }
+  return(
+    <div className="relative flex h-[100px] mb-8">
+      <div className="itam-gradient w-full h-full blur-md absolute left-0 right-0"></div>
+      <div className="flex card items-center gap-4 absolute left-0 right-0 max-h-[100px]">
+        <LetterSvg className="w-12 h-12" />
+        <div className="flex flex-col">
+          <h2 className="text-2xl">Приглашение в команду &quot;{x.team.name}&quot;</h2>
+          <p className="text-text-secondary">
+            <b>{x.team.user.fullname}</b> отправил вам приглашение в команду
+          </p>
+        </div>
+        <div className="grid ml-auto gap-3 md:grid-cols-2 grid-cols-1">
+          <Button appearance="secondary" onClick={handleDecline}>Отказаться</Button>
+          <Button onClick={handleAccept}>Принять</Button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 const Profile = observer(() => {
   const [showAchievmentDialog, setShowAchievmentDialog] = useState(false);
   const auth = AuthStore.auth;
   const user = AuthStore.user;
-
   return (
     <>
       <main className="w-full flex flex-col pb-8 mt-12">
         <div className="max-w-screen-lg mx-auto w-full px-6">
-          <div className="relative flex h-[100px] mb-8">
-            <div className="itam-gradient w-full h-full blur-md absolute left-0 right-0"></div>
-            <div className="flex card items-center gap-4 absolute left-0 right-0 max-h-[100px]">
-              <LetterSvg className="w-12 h-12" />
-              <div className="flex flex-col">
-                <h2 className="text-2xl">Приглашение в команду &quot;ЧПК МИСиС&quot;</h2>
-                <p className="text-text-secondary">
-                  <b>Кирилл Киреев Дмитриевич</b> отправил вам приглашение в команду
-                </p>
-              </div>
-              <div className="grid ml-auto gap-3 md:grid-cols-2 grid-cols-1">
-                <Button appearance="secondary">Отказаться</Button>
-                <Button>Принять</Button>
-              </div>
-            </div>
-          </div>
+          {
+            TeamStore.myInvitations.map((team) => (
+              <Invite team={team} />
+            ))
+          }
           <div
             className="grid gap-3"
             style={{

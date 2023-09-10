@@ -10,9 +10,22 @@ import { Button } from "@/ui/Button";
 import { observer } from "mobx-react-lite";
 import UsersStore from "./users.vm";
 import CheckSvg from "@/assets/check.svg";
+import AuthStore from "@/stores/AuthStore.ts";
+import { TeamEndpoints } from "api/endpoints/TeamEndpoints.ts";
+import { useState } from "react";
 
 const UsersPage = observer(() => {
   const data = UsersStore.items;
+  const [invitedUsersIds, setInvitedUsersIds] = useState<number[]>([]);
+  const inviteToTeam = async (id: number) => {
+    await TeamEndpoints.inviteUser(id);
+    setInvitedUsersIds(prevState => [...prevState, id]);
+    console.log(invitedUsersIds);
+  }
+  const userAlreadyInvited = (id: number) => {
+    return AuthStore.team?.users.some(user => user.id === id);
+  }
+
   return (
     <main className="w-full flex flex-col pb-8">
       <div className="max-w-screen-max mx-auto w-full mt-12 px-6">
@@ -78,13 +91,12 @@ const UsersPage = observer(() => {
                     row.profile.ready_to_move ? <CheckSvg className="w-7 h-7 ml-3" /> : null
                 },
                 {
-                  title: "Действия",
-                  render: () => (
-                    <Button appearance="primary" className="w-fit">
-                      Пригласить
-                    </Button>
-                  )
-                }
+                    title: "Действия",
+                    render: (row) =>
+                      <Button appearance="primary" className="w-fit" disabled={userAlreadyInvited(row.user.id) || !!AuthStore.team || invitedUsersIds.includes(row.user.id) } onClick={() => inviteToTeam(row.user.id)}>
+                        {AuthStore.team && invitedUsersIds.includes(row.user.id) ? "Приглашен" : userAlreadyInvited(row.user.id) ? "Уже в команде" : "Пригласить"}
+                      </Button>
+                  }
               ]}
             />
           </div>
