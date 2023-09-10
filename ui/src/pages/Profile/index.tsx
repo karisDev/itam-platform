@@ -50,7 +50,8 @@ const Profile = observer(() => {
     <>
       <main className="w-full flex flex-col pb-8 mt-12">
         <div className="max-w-screen-lg mx-auto w-full px-6">
-          {AuthStore.invitations?.map((team) => <Invite key={team.id} team={team} />)}
+          {AuthStore.auth?.team_id === null &&
+            AuthStore.invitations?.map((team) => <Invite key={team.id} team={team} />)}
           <div
             className="grid gap-3"
             style={{
