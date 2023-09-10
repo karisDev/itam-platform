@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel
 
@@ -14,8 +14,10 @@ class Participation(BaseModel):
     repo_url: Optional[str]
     description: Optional[str]
     added_to_rating: Optional[int]
-    rates_from_ids = Optional[list]
+    rates_from_ids: List[int] = []
 
+    class Config:
+        from_attributes = True
 
 class ParticipationFinish(BaseModel):
     participation_id: int
