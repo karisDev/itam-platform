@@ -7,6 +7,7 @@ import usersVm from "../../../pages/Users/users.vm";
 import { useNavigate } from "react-router-dom";
 import HackathonsViewModel from "../../../pages/Hackathons/hackathons.vm";
 import UsersStore from "../../../pages/Users/users.vm";
+import { UserResult } from "api/endpoints/AuthEndpoint.ts";
 
 interface ITitleInfo {
   title: string;
@@ -37,12 +38,13 @@ const TeamMember = (x: { fullname: string; role: string }) => {
 //component if users have team
 export const HaveTeam = observer(() => {
   const navigate = useNavigate();
-  const sumRating = () => UsersStore.items.filter((x) => x.user.team_id === AuthStore.auth?.team_id).reduce((acc, x) => acc + x.profile.rating, 0);
-  const getUsersCount = () => UsersStore.items.filter((x) => x.user.team_id === AuthStore.auth?.team_id).length;
+  const teamMembersProfiles = () => UsersStore.items.filter((x) => x.user.team_id === AuthStore.auth?.team_id).map((x) => x.profile);
+  const sumRating = (profiles: UserResult[]) => profiles.reduce((acc, x) => acc + x.rating, 0);
+  const getUsersCount = (profiles: UserResult[]) => profiles.length
   const getAvgRating = () => {
-    const rating = sumRating();
-    if (rating === 0) return 0;
-    return rating / getUsersCount();
+    const members = teamMembersProfiles();
+    if (members.length === 0) return 0;
+    return sumRating(members) / getUsersCount(members);
   }
   HackathonsViewModel;
   return (
