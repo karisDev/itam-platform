@@ -41,8 +41,12 @@ class TeamPageViewModel {
     await AuthStore.fetchParticipations();
   }
 
-  public async finishParticipation(data: ParticipationFinish) {
-    await ParticipationEndpoint.finish(data);
+  public async finishParticipation(data: ParticipationFinish, ok: boolean) {
+    if (!ok) {
+      await ParticipationEndpoint.decline(data.participation_id);
+    } else {
+      await ParticipationEndpoint.finish(data);
+    }
     await AuthStore.fetchParticipations();
   }
 }

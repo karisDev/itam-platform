@@ -40,8 +40,15 @@ export namespace ParticipationEndpoint {
   };
 
   export const finish = async (data: ParticipationFinish) => {
-    const result = await api.put<unknown>(
+    const result = await api.post<unknown>(
       `/api/admin/finish_participation?participation_id=${data.participation_id}&points=${data.points}`
+    );
+    return result;
+  };
+
+  export const decline = async (participationId: number) => {
+    const result = await api.post<unknown>(
+      `/api/admin/decline_participation?participation_id=${participationId}`
     );
     return result;
   };

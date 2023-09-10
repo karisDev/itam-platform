@@ -66,18 +66,16 @@ export const HaveTeam = observer(() => {
             <div className="flex justify-between">
               <h5 className="text-xl font-semibold">Участники</h5>
             </div>
-            {AuthStore.team?.users.map((x) => {
-              return (
-                <TeamMember
-                  key={x.id}
-                  fullname={x.fullname}
-                  role={
-                    usersVm.items.find((u) => u.user.id === x.id)?.profile.positions.join(", ") ??
-                    "Участник"
-                  }
-                />
-              );
-            })}
+            {AuthStore.team?.users.map((x) => (
+              <TeamMember
+                key={x.id}
+                fullname={x.fullname}
+                role={
+                  usersVm.items.find((u) => u.user.id === x.id)?.profile.positions.join(", ") ??
+                  "Участник"
+                }
+              />
+            ))}
             <Button className="mt-auto" onClick={() => navigate("/users")}>
               Найти участников
             </Button>
