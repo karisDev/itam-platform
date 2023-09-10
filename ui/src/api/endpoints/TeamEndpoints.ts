@@ -22,15 +22,15 @@ export namespace TeamEndpoints {
   export const getTeam = async (id: number) => {
     const result = await api.get<Team>(`/api/teams/${id}`);
     return result;
-  }
+  };
 
   export const createTeam = async (name: string) => {
-    const result = await api.post<Team>("/api/teams", { name });
+    const result = await api.post<Team>(`/api/teams?name=${name}`);
     return result;
-  }
+  };
 
   export const enterTeam = async (id: number) => {
     const result = await api.post<Team>(`/api/teams/${id}/enter`);
     return result;
-  }
+  };
 }
