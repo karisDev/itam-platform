@@ -10,6 +10,7 @@ from backend.models import UserDB, InvitationDB, TelegramDB
 from backend.models.teams import TeamDB
 from backend.schemas.invitations import Invitation
 from backend.schemas.teams import Team
+from backend.schemas.users import User
 from backend.services.auth import AuthService, get_auth_service
 
 router = APIRouter(prefix="/teams", tags=["teams"])
@@ -105,6 +106,17 @@ def respond_to_invite(invitation_id: int, status: bool, db: Session = Depends(ge
         db.add(user)
     db.add(invitation)
     db.commit()
+
+
+@router.get("/invite/{team_id}", response_model=list[User])
+def get_invitation_from_team(team_id: int, db: Session = Depends(get_db)):
+    invitations = db.query(InvitationDB).filter_by(team_id=team_id,
+                                                   status=None).all()
+    users = []
+    for invite in invitations:
+        user = db.query(UserDB).filter_by(id=invite.to_id).first()
+        users.append(user)
+    return users
 
 
 @router.get("/{team_id}", response_model=Team)
