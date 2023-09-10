@@ -14,7 +14,7 @@ class Participation(BaseModel):
     repo_url: Optional[str]
     description: Optional[str]
     added_to_rating: Optional[int]
-    rates_from_ids: List[int] = []
+    rates_from_ids: Optional[List[int]]
 
     class Config:
         from_attributes = True

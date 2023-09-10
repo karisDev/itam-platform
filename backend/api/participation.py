@@ -78,3 +78,15 @@ def rate_teammates(token: Annotated[str, Depends(oauth2_scheme)],
     participation.rates_from_ids.append(user.id)
     db.add(participation)
     db.commit()
+
+
+@router.get("/rate", response_model=bool)
+def was_rated(token: Annotated[str, Depends(oauth2_scheme)],
+              participation_id: int,
+              db: Session = Depends(get_db),
+              auth_service: AuthService = Depends(get_auth_service)):
+    user = auth_service.get_current_user(token)
+    participation = db.query(ParticipationDB).filter_by(id=participation_id).first()
+    if not participation:
+        raise HTTPException(status_code=400, detail="События не существует")
+    return participation.rates_from_ids and user.id in participation.rates_from_ids
