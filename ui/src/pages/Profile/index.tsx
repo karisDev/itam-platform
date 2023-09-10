@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import AuthStore from "@/stores/AuthStore";
 import SelectableChip from "@/components/SelectableChip";
 import { useState } from "react";
-import DialogBase from "@/dialogs/CreateTeam";
+import DialogBase from "@/dialogs/DialogBase";
 
 const Profile = observer(() => {
   const [showAchievmentDialog, setShowAchievmentDialog] = useState(false);
@@ -14,7 +14,7 @@ const Profile = observer(() => {
 
   return (
     <>
-      <main className="w-full flex flex-col">
+      <main className="w-full flex flex-col pb-8">
         <div className="max-w-screen-lg mx-auto w-full mt-12 px-6">
           <div
             className="grid gap-3"
@@ -52,7 +52,7 @@ const Profile = observer(() => {
                   ))}
                 </div>
               </div>
-              <Button className="mt-auto gap-2 font-bold">Позвать в команду</Button>
+              <Button className="mt-auto gap-2">Позвать в команду</Button>
             </section>
             <section
               className="bg-bg-primary rounded-lg p-4 gap-4 card flex justify-between flex-col"
@@ -90,13 +90,25 @@ const Profile = observer(() => {
                 <div className="flex items-center gap-3">
                   <span className="text-4xl">🏅</span>
                   <TitleInfo title="3 место" info="VK Definition Hack" />
+                  <span className="text-text-secondary self-start ml-auto">2023</span>
                 </div>
                 <div className="flex gap-3 flex-col">
-                  <TitleInfo title="Год" info="2021" />
                   <TitleInfo title="Кейс" info="Создание VK Mini Apps приложения" />
                 </div>
               </div>
             </div>
+          </div>
+          <div className="card mt-3">
+            <h3 className="text-xl mb-4">Комментарии</h3>
+            <ul className="flex flex-col gap-3">
+              <li className="flex items-center gap-3">
+                <Avatar size={40} />
+                <div className="flex flex-col gap-1">
+                  <h4 className="text-text-secondary font-bold">Иван Иванов</h4>
+                  <p className="text-lg">Спасибо за помощь с деплоем!</p>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </main>

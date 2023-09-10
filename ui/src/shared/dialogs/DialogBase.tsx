@@ -2,19 +2,6 @@ import { Button } from "@/ui/Button";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 
-{
-  /* <CreateTeam
-isOpen
-setIsOpen={() => {}}
-title="Создать команду"
-confirmText="Создать"
-onConfirm={() => {}}>
-<div className="flex flex-col gap-3">
-  <Input name="teamName" label="Название команды" required />
-</div>
-</CreateTeam> */
-}
-
 export default function DialogBase({
   isOpen,
   onCancel,
@@ -76,7 +63,7 @@ export default function DialogBase({
                 <Dialog.Description as="div" className="flex flex-col gap-3 px-6">
                   {children}
                 </Dialog.Description>
-                <div className="flex border-t-[1px] border-border-primary py-3 mt-6 px-6 bg-bg-secondary">
+                <div className="flex border-t-[1px] border-border-primary p-3 mt-6 bg-bg-secondary">
                   {onCancel && (
                     <Button appearance="secondary" onClick={closeModal} className="w-fit">
                       Отмена

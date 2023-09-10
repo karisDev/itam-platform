@@ -24,7 +24,7 @@ export const Input: React.FC<InputProps> = ({
   ...rest
 }) => {
   return (
-    <div className={twMerge("w-full flex flex-col gap-1 relative", className)}>
+    <div className={twMerge("w-full flex justify-center flex-col gap-1 relative", className)}>
       {label && (
         <label className="text-text-secondary text-sm" htmlFor={rest.id}>
           {label}
@@ -50,9 +50,11 @@ export const Input: React.FC<InputProps> = ({
         <input
           className={twMerge(
             "w-full shadow-none box-border focus:shadow-md transition-all duration-200 px-3 h-10 rounded-md border-[1px] border-border-primary placeholder:text-text-secondary text-sm outline-none",
-            icon ? "pl-14" : "",
+            icon ? "pl-10" : "",
             allowClear ? "pr-12" : "",
-            appearance === "primary" ? "bg-input-bg hover:bg-input-hover focus:bg-input-hover" : "",
+            appearance === "primary"
+              ? "bg-input-bg hover:bg-input-hover focus:bg-input-hover"
+              : "bg-bg-primary hover:bg-bg-secondary focus:bg-bg-secondary",
             error ? "border-status-error" : "",
             rest.disabled ? "bg-input-disabled hover:bg-input-disabled" : ""
           )}

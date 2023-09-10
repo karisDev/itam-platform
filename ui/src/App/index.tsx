@@ -8,6 +8,7 @@ import Heading from "@/components/Heading";
 import Profile from "../pages/Profile";
 import { TeamPage } from "../pages/myteam/teamPage";
 import FinishRegistrationDialog from "@/components/FinishRegistrationDialog";
+import Hackathons from "../pages/Hackathons";
 
 export const App = () => {
   const location = useLocation();
@@ -20,7 +21,14 @@ export const App = () => {
           <Routes location={location}>
             {/* <Route index element={<Navigate to="upload" />} /> */}
             <Route path="/login" element={<LoginView />} />
-            {/* <Route path="/login" element={<Profile />} /> */}
+            <Route
+              path="/hackathons"
+              element={
+                <PrivateRoute>
+                  <Hackathons />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/profile"
               element={

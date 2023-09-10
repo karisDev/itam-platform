@@ -1,5 +1,5 @@
 import AuthStore from "@/stores/AuthStore";
-import DialogBase from "@/dialogs/CreateTeam";
+import DialogBase from "@/dialogs/DialogBase";
 import { Input } from "@/ui/Input";
 import { useEffect, useState } from "react";
 import ComboboxMultiple from "@/ui/ComboboxMultiple";

@@ -50,7 +50,9 @@ const Heading = observer(() => {
           <Avatar />
           <div className="flex flex-col">
             <div className="text-sm">{AuthStore.auth?.fullname ?? "Хто я?"}</div>
-            <div className="text-xs text-text-secondary">Рейтинг: {AuthStore.user?.rating}</div>
+            <div className="text-xs text-text-secondary">
+              Рейтинг: {AuthStore.user?.rating ?? "отсутствует"}
+            </div>
           </div>
           <button onClick={() => AuthStore.logout()}>
             <SignOutSvg width={24} height={24} />
