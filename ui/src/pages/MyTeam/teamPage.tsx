@@ -1,7 +1,8 @@
 import { Button } from "@/ui/Button.tsx";
 import MedalSvg from "./assets/medal.svg";
 import TeamPageViewModel from "./teamPage.vm.ts";
-import { User } from "api/endpoints/TeamEndpoints.ts";
+import { Team, User } from "api/endpoints/TeamEndpoints.ts";
+import TitleInfo from "@/ui/TitleInfo.tsx";
 export const TeamPage = () => {
   const vm = TeamPageViewModel;
   return vm.team ? <HaveTeam vm={vm}/> : <NoTeam vm={vm}/>
@@ -23,9 +24,53 @@ const TeamMember = (x: User) => {
 interface ITeamPageViewModel {
   vm: typeof TeamPageViewModel;
 }
+
+const mocTeam: Team[] = [
+  {
+    name: "Team 1",
+    users: [
+      {
+        id: 1,
+        fullname: "User 1",
+        role: "Frontend",
+        email: "ads@.com",
+        nickname: "user1",
+        team_id: 1,
+      },
+      {
+id: 2,
+        fullname: "User 2",
+        role: "Backend",
+        email: "ads@.com",
+        nickname: "user2",
+        team_id: 1,
+      },
+      {
+id: 3,
+        fullname: "User 3",
+        role: "Designer",
+        email: "ads@.com",
+        nickname: "user3",
+        team_id: 1,
+      },
+    ],
+  },
+  {
+    name: "Team 2",
+    users: [
+      {
+        id: 1,
+        fullname: "User 1",
+        role: "Frontend",
+        email: "ads@.com",
+        nickname: "user1",
+        team_id: 1,
+      }]
+  },
+]
 const NoTeam = (x: ITeamPageViewModel) => {
   return(
-    <div className="max-w-screen-lg mx-auto mt-[16px] w-full h-full flex flex-col gap-6">
+    <div className="max-w-screen-lg mx-auto mt-12 w-full h-full flex flex-col gap-6">
       <div className="card w-full flex flex-col">
         <h5 className="text-xl font-semibold">Вы еще не в команде</h5>
         <div className="flex items-center justify-between gap-6">
@@ -33,21 +78,31 @@ const NoTeam = (x: ITeamPageViewModel) => {
         <Button className="w-fit">Создать команду</Button>
         </div>
       </div>
-      <div className={"flex flex-col gap-6"}>
-      {x.vm.allTeams.map((team) => {
-        return <p>{team.name}</p>;
-      })}
-      </div>
+      <section className="flex item-center gap-2">
+        {
+          x.vm.allTeams.length > 0 ?
+          x.vm.allTeams.map((x) => {
+            return <TeamCard team={x}/>
+          })
+            :
+            //<div className="w-full h-full flex items-center justify-center">
+            //  <p className="text-text-secondary">Нет команд</p>
+            //</div>
+            mocTeam.map((x) => {
+              return <TeamCard team={x}/>
+            }
+            )
+        }
+      </section>
     </div>
   )
 }
-
 //component if users have team
 const HaveTeam = (x: ITeamPageViewModel) => {
   return(
     <div className="flex flex-col w-full h-full">
       <TopHeading title={x.vm.team?.name ?? "???"}/>
-      <main className="max-w-screen-lg mx-auto grid w-full mt-[48px]"
+      <main className="max-w-screen-lg mx-auto grid w-full mt-12"
             style={{ gridTemplateColumns: "1fr 1fr",
               gridTemplateRows: "1fr 1fr",
               gridGap: "14px",
@@ -104,4 +159,29 @@ const Stats = (x: IStats) => {
       <div className="text-base font-medium">{x.value}</div>
     </div>
   );
+}
+
+interface ITeamCard {
+  team: Team;
+}
+const TeamCard = (x: ITeamCard) => {
+  const lvl = ["джуниор", "мидл", "сеньор"];
+  const randomLvl = lvl[Math.floor(Math.random() * lvl.length)];
+  return(
+    <div className="card flex flex-col gap-3 w-[356px]">
+      <h6 className="text-xl font-bold">{x.team.name}</h6>
+      <div className="flex items-center gap-6">
+        <TitleInfo title={"Уровень"} info={randomLvl}/>
+        <TitleInfo title={"Участников"} info={x.team.users.length.toString()}/>
+    </div>
+      <div className="flex items-center justify-between gap-2">
+        <div id="team members" className="flex items-center" style={{gap: "-12px"}}>
+          {x.team.users.map((x, index) => {
+            return <div className={`w-[32px] h-[32px] rounded-full itam-gradient border border-bg-primary object-cover transform hover:scale-110 transition-all`} style={{transform: `translateX(-${index * 12}px)`}} key={index}/>
+          })}
+        </div>
+        <Button className="w-fit">Подаю заявку</Button>
+      </div>
+    </div>
+  )
 }
