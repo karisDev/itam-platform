@@ -98,25 +98,25 @@ const Profile = observer(() => {
               <TitleInfo title="О себе" info={user?.description} />
             </section>
           </div>
-          <div className="card">
-            <h3 className="text-xl mb-4">Достижения</h3>
-            <div className="flex flex-wrap gap-3">
-              <div
-                className="flex gap-2 flex-col border border-border-primary bg-bg-secondary rounded-lg p-4 w-fit hover:bg-bg-tetriary transition-colors cursor-pointer"
-                onClick={() => setShowAchievmentDialog(true)}>
-                <div className="flex items-center gap-3">
-                  <span className="text-4xl">🏅</span>
-                  <TitleInfo title="3 место" info="VK Definition Hack" />
-                  <span className="text-text-secondary self-start ml-auto">2023</span>
-                </div>
-                <div className="flex gap-3 flex-col">
-                  <TitleInfo title="Кейс" info="Создание VK Mini Apps приложения" />
+          <div className="mt-3 flex gap-3">
+            <div className="card flex-1">
+              <h3 className="text-xl mb-4">Достижения</h3>
+              <div className="flex flex-wrap gap-3">
+                <div
+                  className="flex gap-2 flex-col border border-border-primary bg-bg-secondary rounded-lg p-4 w-full hover:bg-bg-tetriary transition-colors cursor-pointer"
+                  onClick={() => setShowAchievmentDialog(true)}>
+                  <div className="flex items-center gap-3">
+                    <span className="text-4xl">🏅</span>
+                    <TitleInfo title="3 место" info="VK Definition Hack" />
+                    <span className="text-text-secondary self-start ml-auto">2023</span>
+                  </div>
+                  <div className="flex gap-3 flex-col">
+                    <TitleInfo title="Кейс" info="Создание VK Mini Apps приложения" />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="mt-3 flex gap-3">
-            <div className="card flex-[0.73]">
+            <div className="card flex-1">
               <h3 className="text-xl mb-4">Статьи</h3>
               <ul className="flex flex-col gap-3">
                 <li
@@ -133,18 +133,18 @@ const Profile = observer(() => {
                 </li>
               </ul>
             </div>
-            <div className="card flex-1">
-              <h3 className="text-xl mb-4">Комментарии</h3>
-              <ul className="flex flex-col gap-3">
-                <li className="flex items-center gap-3">
-                  <Avatar size={40} />
-                  <div className="flex flex-col gap-1">
-                    <h4 className="text-text-secondary font-bold">Иван Иванов</h4>
-                    <p className="text-lg">Спасибо за помощь с деплоем!</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
+          </div>
+          <div className="card mt-3">
+            <h3 className="text-xl mb-4">Комментарии</h3>
+            <ul className="flex flex-col gap-3">
+              <li className="flex items-center gap-3">
+                <Avatar size={40} />
+                <div className="flex flex-col gap-1">
+                  <h4 className="text-text-secondary font-bold">Иван Иванов</h4>
+                  <p className="text-lg">Спасибо за помощь с деплоем!</p>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </main>
