@@ -81,6 +81,7 @@ const AuthStore = new (class {
     } catch {
       this.participations = null;
     }
+    this.user = await AuthEndpoint.getUser(this.auth.id);
   }
 
   private async setUserAndAuthState(userAuth: UserAuth | null) {
