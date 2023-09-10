@@ -20,7 +20,7 @@ def is_admin():
 
 @router.get("/participation", response_model=list[Participation])
 def get_participation_for_check(db: Session = Depends(get_db)):
-    participation = db.query(ParticipationDB).filter_by().all()
+    participation = db.query(ParticipationDB).all()
     return participation
 
 
