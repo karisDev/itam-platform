@@ -93,7 +93,7 @@ const UsersPage = observer(() => {
                 {
                     title: "Действия",
                     render: (row) =>
-                      <Button appearance="primary" className="w-fit" disabled={userAlreadyInvited(row.user.id) || !!AuthStore.team || invitedUsersIds.includes(row.user.id) } onClick={() => inviteToTeam(row.user.id)}>
+                      <Button appearance="primary" className="w-fit" disabled={userAlreadyInvited(row.user.id) || !AuthStore.team || invitedUsersIds.includes(row.user.id) } onClick={() => inviteToTeam(row.user.id)}>
                         {AuthStore.team && invitedUsersIds.includes(row.user.id) ? "Приглашен" : userAlreadyInvited(row.user.id) ? "Уже в команде" : "Пригласить"}
                       </Button>
                   }
