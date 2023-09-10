@@ -50,6 +50,10 @@ class UserRepository:
         user = self.db.query(UserDB).filter_by(id=user_id).first()
         return user
 
+    def get_users_for_team(self, skip: int = 0, limit: int = 100) -> list[UserDB]:
+        users = self.db.query(UserDB).filter_by(team_id=None).offset(skip).limit(limit).all()
+        return users
+
 
 def get_user_repository(db: Session = Depends(get_db)) -> UserRepository:
     user_repository = UserRepository(db)

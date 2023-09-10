@@ -2,6 +2,8 @@ import datetime
 from typing import Optional
 from pydantic import BaseModel, EmailStr
 
+from backend.schemas.profiles import Profile
+
 
 class UserRegister(BaseModel):
     email: EmailStr
@@ -25,3 +27,8 @@ class User(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class UserWithProfile(BaseModel):
+    user: User
+    profile: Profile

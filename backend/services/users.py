@@ -4,7 +4,7 @@ from passlib.context import CryptContext
 from backend.models import UserDB
 from backend.repositories.user.postgresql import UserRepository, get_user_repository
 from backend.schemas.profiles import Profile
-from backend.schemas.users import UserRegister
+from backend.schemas.users import UserRegister, UserWithProfile
 from backend.core.security import get_password_hash
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -59,6 +59,15 @@ class UserService:
     def get_profile(self, user_id: int):
         profile = self.db.get_profile(user_id)
         return profile
+
+    def get_users_for_team(self):
+        all_users = self.db.get_users_for_team()
+        users = []
+        for i, user in enumerate(all_users):
+            profile = self.db.get_profile(user.id)
+            if profile:
+                users.append(UserWithProfile(user=user, profile=profile))
+        return users
 
 
 def get_user_service(user_repository: UserRepository = Depends(get_user_repository)) -> UserService:

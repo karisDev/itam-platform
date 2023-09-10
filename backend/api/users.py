@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from backend.core.security import oauth2_scheme
 from backend.schemas.profiles import Profile
-from backend.schemas.users import UserRegister, User
+from backend.schemas.users import UserRegister, User, UserWithProfile
 from backend.services.auth import AuthService, get_auth_service
 from backend.services.users import get_user_service, UserService
 
@@ -11,10 +11,16 @@ from backend.services.users import get_user_service, UserService
 router = APIRouter(prefix="/users", tags=["user"])
 
 
-# @router.get("/", response_model=list[User])
-# def index(user_service: UserService = Depends(get_user_service)):
-#     all_users = user_service.get_users()
-#     return all_users
+@router.get("/", response_model=list[User])
+def all_users(user_service: UserService = Depends(get_user_service)):
+    all_users = user_service.get_users()
+    return all_users
+
+
+@router.get("/for_team", response_model=list[UserWithProfile])
+def users_for_team(user_service: UserService = Depends(get_user_service)):
+    users = user_service.get_users_for_team()
+    return users
 
 
 @router.get("/me", response_model=User)
