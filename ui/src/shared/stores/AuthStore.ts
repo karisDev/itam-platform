@@ -52,8 +52,11 @@ const AuthStore = new (class {
   }
 
   public async fetchTeam() {
-    if (!this.auth?.team_id) return;
-    this.team = await TeamEndpoints.getTeam(this.auth.team_id);
+    if (this.auth?.team_id) {
+      this.team = await TeamEndpoints.getTeam(this.auth.team_id);
+    } else {
+      this.team = null;
+    }
   }
 
   private async setUserAndAuthState(userAuth: UserAuth | null) {

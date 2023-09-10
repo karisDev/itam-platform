@@ -93,6 +93,18 @@ export const SubmitEventResult: React.FC<EventProps> = (x) => {
 
   return (
     <>
+      <div className="relative flex h-[100px] mb-8">
+        <div className="itam-gradient w-full h-full blur-md absolute left-0 right-0"></div>
+        <div className="flex card items-center gap-4 absolute left-0 right-0 max-h-[100px]">
+          <div className="flex flex-col">
+            <h2 className="text-2xl">{x.title}</h2>
+            <p className="text-text-secondary text-lg">Отправить результаты хакатона</p>
+          </div>
+          <div className="grid ml-auto">
+            <Button onClick={() => setSubmitResultExpanded(true)}>Хакатон завершен</Button>
+          </div>
+        </div>
+      </div>
       <DialogBase
         width={700}
         confirmDisabled={loading}
@@ -136,18 +148,6 @@ export const SubmitEventResult: React.FC<EventProps> = (x) => {
           </Section>
         </div>
       </DialogBase>
-      <div className="relative flex h-[100px] mb-8">
-        <div className="itam-gradient w-full h-full blur-md absolute left-0 right-0"></div>
-        <div className="flex card items-center gap-4 absolute left-0 right-0 max-h-[100px]">
-          <div className="flex flex-col">
-            <h2 className="text-2xl">{x.title}</h2>
-            <p className="text-text-secondary text-lg">Отправить результаты хакатона</p>
-          </div>
-          <div className="grid ml-auto">
-            <Button onClick={() => setSubmitResultExpanded(true)}>Хакатон завершен</Button>
-          </div>
-        </div>
-      </div>
     </>
   );
 };

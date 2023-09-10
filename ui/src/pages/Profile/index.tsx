@@ -106,7 +106,7 @@ const Profile = observer(() => {
               <TitleInfo title="О себе" info={user?.description} />
             </section>
           </div>
-          <div className="mt-3 flex gap-3">
+          <div className="flex gap-3">
             <div className="card flex-1">
               <h3 className="text-xl mb-4">Достижения</h3>
               <div className="flex flex-wrap gap-3">
