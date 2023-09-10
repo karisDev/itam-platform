@@ -7,11 +7,12 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import DialogBase from "@/dialogs/DialogBase.tsx";
 import { Input } from "@/ui/Input.tsx";
+import AuthStore from "@/stores/AuthStore.ts";
 
-export const TeamPage = () => {
+export const TeamPage = observer(() => {
   const vm = TeamPageViewModel;
-  return vm.team ? <HaveTeam vm={vm} /> : <NoTeam vm={vm} />;
-};
+  return AuthStore.team ? <HaveTeam vm={vm} /> : <NoTeam vm={vm} />;
+});
 
 const TeamMember = (x: User) => {
   return (
@@ -150,10 +151,10 @@ const NoTeam = observer((x: ITeamPageViewModel) => {
 });
 
 //component if users have team
-const HaveTeam = (x: ITeamPageViewModel) => {
+const HaveTeam = observer((x: ITeamPageViewModel) => {
   return (
     <div className="flex flex-col w-full h-full">
-      <TopHeading title={x.vm.team?.name ?? "???"} />
+      <TopHeading title={AuthStore.team?.name ?? "???"} />
       <main
         className="max-w-screen-lg mx-auto grid w-full mt-12"
         style={{
@@ -168,7 +169,7 @@ const HaveTeam = (x: ITeamPageViewModel) => {
         }}>
         <div className="card flex flex-col gap-6" style={{ gridArea: "members" }}>
           <h5 className="text-xl font-semibold">Участники</h5>
-          {x.vm.team?.users.map((x) => {
+          {AuthStore.team?.users.map((x) => {
             return <TeamMember {...x} />;
           })}
           <Button>Найти участников</Button>
@@ -206,7 +207,7 @@ const HaveTeam = (x: ITeamPageViewModel) => {
       </main>
     </div>
   );
-};
+});
 
 interface MockInvite {
   name: string;
@@ -247,7 +248,7 @@ interface ITitleInfo {
 }
 const TopHeading = (x: ITitleInfo) => {
   return (
-    <div className={"bg-bg-primary w-full h-[128px] border-b-[1px] border-border-primary"}>
+    <div className={"bg-bg-primary w-full min-h-[128px] border-b-[1px] border-border-primary"}>
       <div className="max-w-screen-lg mx-auto w-full h-full flex items-center justify-start px-6">
         <h2 className="text-[32px] font-normal">{x.title}</h2>
       </div>

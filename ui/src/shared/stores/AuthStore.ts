@@ -1,4 +1,5 @@
 import { AuthEndpoint, UserAuth, UserResult, UserUpdate } from "api/endpoints/AuthEndpoint";
+import { Team, TeamEndpoints } from "api/endpoints/TeamEndpoints";
 import { removeStoredAuthToken } from "api/utils/authToken";
 import { makeAutoObservable } from "mobx";
 
@@ -7,6 +8,7 @@ type AuthState = "loading" | "anonymous" | "authorized" | "unfinished";
 const AuthStore = new (class {
   public user: UserResult | null = null;
   public auth: UserAuth | null = null;
+  public team: Team | null = null;
   public authState: AuthState = "loading";
 
   constructor() {
@@ -64,6 +66,10 @@ const AuthStore = new (class {
         this.authState = "unfinished";
         return;
       }
+      if (userAuth.team_id) {
+        this.team = await TeamEndpoints.getTeam(userAuth.team_id);
+      }
+
       this.authState = "authorized";
       const user = await AuthEndpoint.getUser(userAuth.id);
       this.user = user;
