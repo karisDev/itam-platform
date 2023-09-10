@@ -8,10 +8,10 @@ import requests
 class Bot:
     token = settings.bot_token
 
-    def send_message(self, chat_id, text):
+    async def send_message(self, chat_id, text):
         url = f'https://api.telegram.org/bot{self.token}/sendMessage?chat_id={chat_id}&text={text}'
         print(url)
-        response = requests.get(url)
+        response = await requests.get(url)
 
     def get_users(self):
         url = f'https://api.telegram.org/bot{self.token}/getUpdates'

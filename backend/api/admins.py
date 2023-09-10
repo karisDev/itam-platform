@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from starlette.background import BackgroundTasks
 
 from backend.bot import bot
 from backend.core.database import get_db
@@ -24,7 +25,7 @@ def get_participation_for_check(db: Session = Depends(get_db)):
 
 
 @router.post("/finish_participation")
-def finish_participation(participation_id: int, points: int, db: Session = Depends(get_db)):
+async def finish_participation(participation_id: int, points: int, db: Session = Depends(get_db)):
     participation = db.query(ParticipationDB).filter_by(id=participation_id).first()
     participation.added_to_rating = points
     participation.status = "Участие завершено"
