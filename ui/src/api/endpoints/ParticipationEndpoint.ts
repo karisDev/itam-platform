@@ -18,6 +18,11 @@ export interface ParticipationUpdate {
   description: string;
 }
 
+export interface ParticipationFinish {
+  participation_id: number;
+  points: number;
+}
+
 export namespace ParticipationEndpoint {
   export const register = async (eventId: number) => {
     const result = await api.post<unknown>(`/api/participation?event_id=${eventId}`);
@@ -29,8 +34,15 @@ export namespace ParticipationEndpoint {
     return result;
   };
 
-  export const finish = async (data: ParticipationUpdate) => {
+  export const submit = async (data: ParticipationUpdate) => {
     const result = await api.put<unknown>(`/api/participation/${data.participation_id}/`, data);
+    return result;
+  };
+
+  export const finish = async (data: ParticipationFinish) => {
+    const result = await api.put<unknown>(
+      `/api/admin/finish_participation?participation_id=${data.participation_id}&points=${data.points}`
+    );
     return result;
   };
 }

@@ -75,7 +75,7 @@ export const SubmitEventResult: React.FC<EventProps> = (x) => {
     setError(false);
     setLoading(true);
     try {
-      await TeamPageViewModel.finishParticipation({
+      await TeamPageViewModel.submitParticipation({
         participation_id: x.participationId,
         place,
         repo_url: repository,

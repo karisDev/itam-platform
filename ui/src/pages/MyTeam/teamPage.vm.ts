@@ -1,7 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { Team, TeamEndpoints, User } from "api/endpoints/TeamEndpoints.ts";
 import AuthStore from "@/stores/AuthStore.ts";
-import { ParticipationEndpoint, ParticipationUpdate } from "api/endpoints/ParticipationEndpoint";
+import {
+  ParticipationEndpoint,
+  ParticipationFinish,
+  ParticipationUpdate
+} from "api/endpoints/ParticipationEndpoint";
 
 export interface Invitation {
   id: number;
@@ -32,7 +36,12 @@ class TeamPageViewModel {
     await AuthStore.fetchInvitations();
   }
 
-  public async finishParticipation(data: ParticipationUpdate) {
+  public async submitParticipation(data: ParticipationUpdate) {
+    await ParticipationEndpoint.submit(data);
+    await AuthStore.fetchParticipations();
+  }
+
+  public async finishParticipation(data: ParticipationFinish) {
     await ParticipationEndpoint.finish(data);
     await AuthStore.fetchParticipations();
   }

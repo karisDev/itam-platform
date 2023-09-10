@@ -48,6 +48,9 @@ const Heading = observer(() => {
           <NavItem to={"/users"} currentRoute={currentRoute}>
             Участники
           </NavItem>
+          <NavItem to={"/admin"} currentRoute={currentRoute}>
+            Админка
+          </NavItem>
         </div>
         <div className="flex items-center gap-3">
           <Avatar />
