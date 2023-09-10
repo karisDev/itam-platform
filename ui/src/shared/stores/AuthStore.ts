@@ -51,6 +51,11 @@ const AuthStore = new (class {
     }
   }
 
+  public async fetchTeam() {
+    if (!this.auth?.team_id) return;
+    this.team = await TeamEndpoints.getTeam(this.auth.team_id);
+  }
+
   private async setUserAndAuthState(userAuth: UserAuth | null) {
     this.auth = userAuth;
     if (userAuth === null) {
@@ -66,10 +71,8 @@ const AuthStore = new (class {
         this.authState = "unfinished";
         return;
       }
-      if (userAuth.team_id) {
-        this.team = await TeamEndpoints.getTeam(userAuth.team_id);
-      }
 
+      this.fetchTeam();
       this.authState = "authorized";
       const user = await AuthEndpoint.getUser(userAuth.id);
       this.user = user;
@@ -92,6 +95,17 @@ const AuthStore = new (class {
     try {
       await AuthEndpoint.updateUser(updatedUser);
       this.setUserAndAuthState(this.auth);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  public async registerToEvent(eventId: number) {
+    if (!this.auth) return false;
+    try {
+      await TeamEndpoints.registerToEvent(this.auth.id, eventId);
+      await this.fetchTeam();
       return true;
     } catch {
       return false;

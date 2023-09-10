@@ -33,4 +33,10 @@ export namespace TeamEndpoints {
     const result = await api.post<Team>(`/api/teams/${id}/enter`);
     return result;
   };
+
+  export const registerToEvent = async (teamId: number, eventId: number) => {
+    return null;
+    // const result = await api.post<Team>(`/api/teams/${teamId}/events/${eventId}/register`);
+    // return result;
+  };
 }

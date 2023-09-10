@@ -12,7 +12,8 @@ export default function DialogBase({
   subtitle,
   width,
   coolBlur,
-  bottom
+  bottom,
+  confirmDisabled
 }: {
   isOpen: boolean;
   onCancel?: () => void;
@@ -24,6 +25,7 @@ export default function DialogBase({
   width?: string | number;
   coolBlur?: boolean;
   bottom?: JSX.Element;
+  confirmDisabled?: boolean;
 }) {
   function closeModal() {
     onCancel?.();
@@ -76,6 +78,7 @@ export default function DialogBase({
                     <Button
                       appearance="primary"
                       onClick={onConfirm}
+                      disabled={confirmDisabled}
                       className={`w-fit ${coolBlur ? "with-cool-blur" : ""}`}>
                       {confirmText}
                     </Button>

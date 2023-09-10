@@ -1,10 +1,13 @@
 import LinkSvg from "@/assets/link.svg";
 import DialogBase from "@/dialogs/DialogBase";
+import AuthStore from "@/stores/AuthStore";
 import { Button } from "@/ui/Button";
 import TitleInfo from "@/ui/TitleInfo";
 import { EventResult } from "api/endpoints/EventEndpoint";
+import { observer } from "mobx-react-lite";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { useNavigate } from "react-router-dom";
 
 const testEvent = {
   id: 1,
@@ -32,9 +35,16 @@ const MARKDOWN = `
 💡 На хакатоне вы сможете проверить свои навыки, найти новых единомышленников и показать свою сообразительность. Лучшим участникам будет предложен контракт или возможность трудоустройства для продолжения работы над проектом.
 `;
 
-const HackCard = ({ item }: { item: EventResult }) => {
+const HackCard = observer(({ item }: { item: EventResult }) => {
   const [expanded, setExpanded] = useState(false);
+  const navigate = useNavigate();
   const hack = item;
+
+  const handleRegister = async () => {
+    setExpanded(false);
+    await AuthStore.registerToEvent(hack.id);
+    navigate("/MyTeam");
+  };
 
   return (
     <>
@@ -62,11 +72,12 @@ const HackCard = ({ item }: { item: EventResult }) => {
       </div>
       <DialogBase
         confirmText="Записаться"
-        onConfirm={() => setExpanded(false)}
+        onConfirm={handleRegister}
         title={hack?.title ?? "Хакатон"}
         subtitle={"Организатор: AI Open News"}
         isOpen={expanded}
         width={700}
+        confirmDisabled={AuthStore.team === null}
         bottom={
           <Button
             appearance="secondary"
@@ -105,6 +116,6 @@ const HackCard = ({ item }: { item: EventResult }) => {
       </DialogBase>
     </>
   );
-};
+});
 
 export default HackCard;
