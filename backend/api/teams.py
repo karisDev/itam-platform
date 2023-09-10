@@ -3,9 +3,10 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from backend.bot import bot
 from backend.core.database import get_db
 from backend.core.security import oauth2_scheme
-from backend.models import UserDB, InvitationDB
+from backend.models import UserDB, InvitationDB, TelegramDB
 from backend.models.teams import TeamDB
 from backend.schemas.invitations import Invitation
 from backend.schemas.teams import Team
@@ -59,6 +60,9 @@ def invite_to_team(token: Annotated[str, Depends(oauth2_scheme)], user_id: int, 
         raise HTTPException(status_code=400, detail="Юзера не существует")
     from_user = auth_service.get_current_user(token)
     invitation = InvitationDB(from_id=from_user.id, to_id=to_user.id, team_id=from_user.id)
+    tg_user = db.query(TelegramDB).filter_by(username=to_user.nickname).first()
+    if tg_user:
+        bot.send_message(tg_user.chat_id, "У вас новое приглашение в команду")
     db.add(invitation)
     db.commit()
 
