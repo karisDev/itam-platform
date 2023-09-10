@@ -7,27 +7,17 @@ import { useState } from "react";
 import TeamPageViewModel from "../teamPage.vm";
 import { Input } from "@/ui/Input";
 import Avatar from "@/ui/Avatar";
-import UsersStore from "../../../pages/Users/users.vm";
-import { UserResult } from "api/endpoints/AuthEndpoint.ts";
 interface ITeamCard {
   team: Team;
 }
 
 const TeamCard = (x: ITeamCard) => {
-  const teamMembersProfiles = () => UsersStore.items.filter((member) => member.user.team_id === x.team.users[0].team_id).map((x) => x.profile);
-  const getUsersCount = () => x.team.users.length;
-  const getSumRating = (profiles: UserResult[]) => profiles.reduce((acc, x) => acc + x.rating, 0);
-const getAvgRating = () => {
-    const profiles = teamMembersProfiles();
-    if (profiles.length === 0) return 0;
-    return getSumRating(profiles) / getUsersCount();
-}
   return (
     <div className="card flex flex-col gap-4">
       <h6 className="text-xl font-bold">{x.team.name}</h6>
       <div className="flex justify-between gap-6">
-        <TitleInfo title={"Рейтинг (ср.)"} info={getAvgRating()} />
-        <TitleInfo title={"Участников"} info={x.team.users.length.toString()} />
+        <TitleInfo title={"Рейтинг (ср.)"} info={x.team.rating} />
+        <TitleInfo title={"Участников"} info={x.team.users.length} />
       </div>
       <div className="flex items-center justify-between gap-2">
         <div

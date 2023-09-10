@@ -6,8 +6,6 @@ import MedalSvg from "../assets/medal.svg";
 import usersVm from "../../../pages/Users/users.vm";
 import { useNavigate } from "react-router-dom";
 import HackathonsViewModel from "../../../pages/Hackathons/hackathons.vm";
-import UsersStore from "../../../pages/Users/users.vm";
-import { UserResult } from "api/endpoints/AuthEndpoint.ts";
 import TitleInfo from "@/ui/TitleInfo.tsx";
 
 interface ITitleInfo {
@@ -39,14 +37,6 @@ const TeamMember = (x: { fullname: string; role: string }) => {
 //component if users have team
 export const HaveTeam = observer(() => {
   const navigate = useNavigate();
-  const teamMembersProfiles = () => UsersStore.items.filter((x) => x.user.team_id === AuthStore.auth?.team_id).map((x) => x.profile);
-  const sumRating = (profiles: UserResult[]) => profiles.reduce((acc, x) => acc + x.rating, 0);
-  const getUsersCount = (profiles: UserResult[]) => profiles.length
-  const getAvgRating = () => {
-    const members = teamMembersProfiles();
-    if (members.length === 0) return 0;
-    return sumRating(members) / getUsersCount(members);
-  }
   const Achievements = () => {
     const participations = AuthStore.participations?.filter((p) => p.status === "Участие завершено").slice(0, 3);
     //get more info for participations from EventsEndpoint.ts
@@ -114,8 +104,8 @@ export const HaveTeam = observer(() => {
           <div
             className="card flex items-center justify-between gap-6"
             style={{ gridArea: "stats" }}>
-            <TitleInfo title="Средний рейтинг" info={getAvgRating().toFixed(0).toString()} />
-            <TitleInfo title="Участников" info={AuthStore.team?.users.length.toString() || "?"} />
+            <TitleInfo title="Средний рейтинг" info={AuthStore.team?.rating || "?"} />
+            <TitleInfo title="Участников" info={AuthStore.team?.users.length.toString() || "-"} />
             <TitleInfo title="Побед" info="2" />
             <TitleInfo title="Участий" info="8" />
           </div>

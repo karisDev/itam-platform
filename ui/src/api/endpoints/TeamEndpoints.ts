@@ -10,7 +10,9 @@ export interface User {
 }
 
 export interface Team {
+  id: number;
   name: string;
+  rating: number;
   users: User[];
 }
 
