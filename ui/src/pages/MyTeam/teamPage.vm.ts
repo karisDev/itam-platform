@@ -22,14 +22,16 @@ class TeamPageViewModel {
     this.myInvitations = await TeamEndpoints.getMyInvitations();
   }
 
-
-
   public async createTeam(name: string) {
     const team = await TeamEndpoints.createTeam(name);
     AuthStore.team = team;
   }
 
   public myInvitations: Invitation[] = [];
+  public async respondToInvitation(invitation_id: number, accept: boolean) {
+    await TeamEndpoints.respondToInvitation(invitation_id, accept);
+    this.myInvitations = await TeamEndpoints.getMyInvitations();
+  }
 }
 
 export default new TeamPageViewModel();

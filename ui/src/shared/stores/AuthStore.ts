@@ -1,4 +1,5 @@
 import { AuthEndpoint, UserAuth, UserResult, UserUpdate } from "api/endpoints/AuthEndpoint";
+import { Participation, ParticipationEndpoint } from "api/endpoints/ParticipationEndpoint";
 import { Team, TeamEndpoints } from "api/endpoints/TeamEndpoints";
 import { removeStoredAuthToken } from "api/utils/authToken";
 import { makeAutoObservable } from "mobx";
@@ -9,6 +10,7 @@ const AuthStore = new (class {
   public user: UserResult | null = null;
   public auth: UserAuth | null = null;
   public team: Team | null = null;
+  public participations: Participation[] | null = null;
   public authState: AuthState = "loading";
 
   constructor() {
@@ -16,6 +18,7 @@ const AuthStore = new (class {
     this.checkAuth();
   }
 
+  //#region Auth
   public async login(username: string, password: string) {
     if (!username || !password) return false;
     try {
@@ -50,7 +53,9 @@ const AuthStore = new (class {
       this.setUserAndAuthState(null);
     }
   }
+  //#endregion
 
+  //#region team
   public async fetchTeam() {
     if (this.auth?.team_id) {
       this.team = await TeamEndpoints.getTeam(this.auth.team_id);
@@ -58,6 +63,7 @@ const AuthStore = new (class {
       this.team = null;
     }
   }
+  //#endregion
 
   private async setUserAndAuthState(userAuth: UserAuth | null) {
     this.auth = userAuth;
@@ -76,6 +82,7 @@ const AuthStore = new (class {
       }
 
       this.fetchTeam();
+      this.getPaticipations();
       this.authState = "authorized";
       const user = await AuthEndpoint.getUser(userAuth.id);
       this.user = user;
@@ -107,11 +114,20 @@ const AuthStore = new (class {
   public async registerToEvent(eventId: number) {
     if (!this.auth) return false;
     try {
-      await TeamEndpoints.registerToEvent(this.auth.id, eventId);
+      await ParticipationEndpoint.register(eventId);
       await this.fetchTeam();
       return true;
     } catch {
       return false;
+    }
+  }
+
+  public async getPaticipations() {
+    if (!this.auth?.team_id) return null;
+    try {
+      this.participations = await ParticipationEndpoint.getList(this.auth.team_id);
+    } catch {
+      this.participations = null;
     }
   }
 })();

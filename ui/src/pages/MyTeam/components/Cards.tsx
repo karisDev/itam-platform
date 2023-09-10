@@ -3,7 +3,6 @@ import { Button } from "@/ui/Button";
 import { Input } from "@/ui/Input";
 import { Section } from "@/ui/Section";
 import { useState } from "react";
-import TeamPageViewModel from "../teamPage.vm";
 
 interface MockInvite {
   name: string;
@@ -101,7 +100,7 @@ export const SubmitEventResult: React.FC<EventProps> = (x) => {
             <p className="text-text-secondary text-lg">Отправить результаты хакатона</p>
           </div>
           <div className="grid ml-auto">
-            <Button onClick={() => setSubmitResultExpanded(true)}>Хакатон завершен</Button>
+            <Button onClick={() => setSubmitResultExpanded(true)}>Поделиться результатом</Button>
           </div>
         </div>
       </div>

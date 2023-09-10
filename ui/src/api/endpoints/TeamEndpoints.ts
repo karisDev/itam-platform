@@ -35,24 +35,20 @@ export namespace TeamEndpoints {
     return result;
   };
 
-  export const registerToEvent = async (teamId: number, eventId: number) => {
-    return null;
-    // const result = await api.post<Team>(`/api/teams/${teamId}/events/${eventId}/register`);
-    // return result;
-  };
-
   export const inviteUser = async (userId: number) => {
     const result = await api.post<string>(`/api/teams/invite?user_id=${userId}`);
     return result;
-  }
+  };
 
   export const getMyInvitations = async () => {
     const result = await api.get<Invitation[]>("/api/teams/invite");
     return result;
-  }
+  };
 
-  export const RespondToInvitation = async (invitation_id: number, accept: boolean) => {
-    const result = await api.post<string>(`/api/teams/invite?invitation_id=${invitation_id}&accept=${accept}`);
+  export const respondToInvitation = async (invitation_id: number, accept: boolean) => {
+    const result = await api.put<string>(
+      `/api/teams/invite?invitation_id=${invitation_id}&status=${accept}`
+    );
     return result;
-  }
+  };
 }

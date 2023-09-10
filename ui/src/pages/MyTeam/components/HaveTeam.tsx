@@ -37,7 +37,7 @@ export const HaveTeam = observer(() => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full pb-4">
       <TopHeading title={AuthStore.team?.name ?? "???"} />
       <main className="max-w-screen-lg mx-auto w-full px-6 mt-12">
         <SubmitEventResult title="True Tech Hack" />

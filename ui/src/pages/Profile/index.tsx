@@ -8,19 +8,19 @@ import { useState } from "react";
 import DialogBase from "@/dialogs/DialogBase";
 import LetterSvg from "./assets/letter.svg";
 import TeamStore, { Invitation } from "../MyTeam/teamPage.vm";
-import { TeamEndpoints } from "api/endpoints/TeamEndpoints.ts";
 
 interface IInviteProps {
   team: Invitation;
 }
 const Invite = (x: IInviteProps) => {
   const handleAccept = async () => {
-    await TeamEndpoints.RespondToInvitation(x.team.id, true);
-  }
+    await TeamStore.respondToInvitation(x.team.id, true);
+  };
   const handleDecline = async () => {
-    await TeamEndpoints.RespondToInvitation(x.team.id, false);
-  }
-  return(
+    await TeamStore.respondToInvitation(x.team.id, false);
+  };
+
+  return (
     <div className="relative flex h-[100px] mb-8">
       <div className="itam-gradient w-full h-full blur-md absolute left-0 right-0"></div>
       <div className="flex card items-center gap-4 absolute left-0 right-0 max-h-[100px]">
@@ -32,13 +32,15 @@ const Invite = (x: IInviteProps) => {
           </p>
         </div>
         <div className="grid ml-auto gap-3 md:grid-cols-2 grid-cols-1">
-          <Button appearance="secondary" onClick={handleDecline}>Отказаться</Button>
+          <Button appearance="secondary" onClick={handleDecline}>
+            Отказаться
+          </Button>
           <Button onClick={handleAccept}>Принять</Button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Profile = observer(() => {
   const [showAchievmentDialog, setShowAchievmentDialog] = useState(false);
@@ -48,11 +50,9 @@ const Profile = observer(() => {
     <>
       <main className="w-full flex flex-col pb-8 mt-12">
         <div className="max-w-screen-lg mx-auto w-full px-6">
-          {
-            TeamStore.myInvitations.map((team) => (
-              <Invite team={team} />
-            ))
-          }
+          {TeamStore.myInvitations.map((team) => (
+            <Invite key={team.id} team={team} />
+          ))}
           <div
             className="grid gap-3"
             style={{
