@@ -1,0 +1,43 @@
+$border-color: rgb(51, 51, 51);
+
+.table {
+  table-layout: auto;
+  height: fit-content;
+  display: block;
+  overflow: auto;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+  padding-inline: 2px;
+  padding-bottom: 5px;
+  text-align: left;
+}
+
+.tr {
+  border-radius: 6px;
+  width: 100%;
+  text-align: left;
+  td {
+    border-block: 1px solid $border-color;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 0;
+    white-space: nowrap;
+    padding-block: 8px;
+    padding-inline: 12px;
+    &:last-child {
+      border-right: 1px solid $border-color;
+      border-bottom-right-radius: 6px;
+      border-top-right-radius: 6px;
+    }
+
+    &:first-child {
+      border-left: 1px solid $border-color;
+      border-bottom-left-radius: 6px;
+      border-top-left-radius: 6px;
+    }
+  }
+}

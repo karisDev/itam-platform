@@ -19,7 +19,7 @@ const Checkbox: React.FC<CheckboxProps> = (p) => {
       className={twMerge(
         "flex gap-2 items-center",
         p.bordered &&
-          "border border-border-primary rounded-md p-3 bg-bg-tetriary/60 hover:bg-bg-tetriary"
+          "border border-border-primary rounded-md p-3 bg-input-bg hover:bg-bg-secondary transition-colors duration-200"
       )}
       checked={isChecked}
       onChange={(checked) => {
@@ -28,9 +28,9 @@ const Checkbox: React.FC<CheckboxProps> = (p) => {
       }}>
       <div
         className={twMerge(
-          "w-6 h-6 border border-border-primary bg-input-hover rounded-md flex items-center justify-center text-bg-primary",
+          "w-6 h-6 min-w-[24px] min-h-[24px] border border-border-primary bg-input-hover rounded-md flex items-center justify-center text-bg-primary",
           isChecked ? "bg-white" : "",
-          p.bordered && "w-5 h-5 rounded-[4px] border-text-primary"
+          p.bordered && "w-5 h-5min-w-[20px] min-h-[20px] rounded-[4px] border-text-primary/30"
         )}>
         {isChecked && <CheckSvg className="w-5 h-5" />}
       </div>

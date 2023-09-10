@@ -99,11 +99,11 @@ const Profile = observer(() => {
             </div>
           </div>
           <div className="mt-3 flex gap-3">
-            <div className="card flex-[0.7]">
+            <div className="card flex-[0.73]">
               <h3 className="text-xl mb-4">Статьи</h3>
               <ul className="flex flex-col gap-3">
                 <li
-                  className="flex items-center gap-3 bg-bg-tetriary/60 rounded-lg px-3 p-2 hover:bg-bg-tetriary transition-colors duration-200 cursor-pointer"
+                  className="flex items-center gap-3 border border-border-primary bg-bg-secondary rounded-lg px-3 p-2 hover:bg-bg-tetriary transition-colors duration-200 cursor-pointer"
                   onClick={() => setShowAchievmentDialog(true)}>
                   <span className="text-3xl">😱</span>
                   <div className="flex flex-col gap-1">

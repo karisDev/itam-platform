@@ -9,6 +9,7 @@ import Profile from "../pages/Profile";
 import { TeamPage } from "../pages/MyTeam/teamPage";
 import FinishRegistrationDialog from "@/components/FinishRegistrationDialog";
 import Hackathons from "../pages/Hackathons";
+import UsersPage from "../pages/Users";
 
 export const App = () => {
   const location = useLocation();
@@ -41,6 +42,14 @@ export const App = () => {
               element={
                 <PrivateRoute>
                   <TeamPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <PrivateRoute>
+                  <UsersPage />
                 </PrivateRoute>
               }
             />

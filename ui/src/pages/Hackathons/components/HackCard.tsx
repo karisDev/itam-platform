@@ -84,7 +84,7 @@ const HackCard = ({ item }: { item: EventResult }) => {
               />
             </div>
 
-            <div className="flex flex-col justify-between flex-1/2 my-6 gap-6 max-w-[250px]">
+            <div className="flex flex-col justify-between flex-1/2 gap-6 max-w-[250px]">
               <TitleInfo title="Дата проведения" info={hack?.date_event} />
               <TitleInfo title="Призовые" info={hack?.prize} />
               <TitleInfo title="Регистрация" info={hack?.date_registration} />

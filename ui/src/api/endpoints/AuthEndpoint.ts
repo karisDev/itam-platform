@@ -31,6 +31,11 @@ export interface UserUpdate {
   ready_to_move: boolean;
 }
 
+export interface UserList {
+  user: UserAuth;
+  profile: UserResult;
+}
+
 export namespace AuthEndpoint {
   export const login = async (username: string, password: string) => {
     const params = new URLSearchParams();
@@ -81,6 +86,11 @@ export namespace AuthEndpoint {
 
   export const updateUser = async (data: UserResult) => {
     const result = await api.post<string>(`/api/users/profile?user_id=${data.user_id}`, data);
+    return result;
+  };
+
+  export const getUsers = async () => {
+    const result = await api.get<UserList[]>("/api/users/for_team");
     return result;
   };
 }

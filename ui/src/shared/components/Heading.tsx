@@ -45,6 +45,9 @@ const Heading = observer(() => {
           <NavItem to={"/hackathons"} currentRoute={currentRoute}>
             Хакатоны
           </NavItem>
+          <NavItem to={"/users"} currentRoute={currentRoute}>
+            Участники
+          </NavItem>
         </div>
         <div className="flex items-center gap-3">
           <Avatar />
@@ -55,7 +58,11 @@ const Heading = observer(() => {
             </div>
           </div>
           <button onClick={() => AuthStore.logout()}>
-            <SignOutSvg width={24} height={24} />
+            <SignOutSvg
+              className="text-text-secondary hover:text-text-primary"
+              width={24}
+              height={24}
+            />
           </button>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { Fragment, useState } from "react";
 interface ComboboxMultipleProps {
   value: string[];
   onChange: (value: string[]) => void;
-  options: string[];
+  options: readonly string[];
   label?: string;
   placeholder?: string;
   fixStupidBug?: boolean;
@@ -28,8 +28,8 @@ const ComboboxMultiple = (p: ComboboxMultipleProps) => {
   return (
     <Combobox value={p.value} multiple onChange={p.onChange}>
       <div className="relative text-sm">
-        {p.label && <Combobox.Label>{p.label}</Combobox.Label>}
-        <div className="relative h-fit flex items-center bg-input-bg hover:bg-input-hover w-full border-border-primary border rounded-md">
+        {p.label && <Combobox.Label className="text-text-secondary">{p.label}</Combobox.Label>}
+        <div className="relative h-fit flex items-center bg-input-bg hover:bg-input-hover transition-colors duration-200 w-full border-border-primary border rounded-md">
           <Combobox.Input
             className="bg-transparent h-10 outline-none px-4 py-2 w-full cursor-pointer pr-8 text-ellipsis"
             placeholder={placeholder}

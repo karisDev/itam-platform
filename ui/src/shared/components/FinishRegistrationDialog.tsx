@@ -7,7 +7,7 @@ import SelectableChip from "./SelectableChip";
 import { observer } from "mobx-react-lite";
 import Checkbox from "@/ui/Checkbox";
 
-export const COMPETENCES = [
+export const Competences = [
   "JavaScript",
   "PHP",
   "Git",
@@ -37,7 +37,7 @@ export const COMPETENCES = [
   "Deep Learning",
   "C++",
   "C#"
-];
+] as const;
 
 const Section = ({
   children,
@@ -120,7 +120,7 @@ const FinishRegistrationDialog = observer(() => {
         <Section title="Стек">
           <ComboboxMultiple
             fixStupidBug
-            options={COMPETENCES}
+            options={Competences}
             value={competences}
             onChange={setCompetences}
           />
