@@ -4,8 +4,8 @@ const TitleInfo = ({
   subInfo
 }: {
   title: string;
-  info?: string | number;
-  subInfo?: string | number;
+  info?: string | number | null;
+  subInfo?: string | number | null;
 }) => {
   return (
     <div className="flex flex-col gap-1">

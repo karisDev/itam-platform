@@ -4,8 +4,12 @@ import Separator from "@/ui/Separator";
 import Collapsible from "@/ui/Collapsible";
 import HackCard from "./components/HackCard";
 import Checkbox from "@/ui/Checkbox";
+import { observer } from "mobx-react-lite";
+import HackathonsViewModel from "./hackathons.vm";
 
-const Hackathons = () => {
+const Hackathons = observer(() => {
+  const vm = HackathonsViewModel;
+
   return (
     <main className="w-full flex flex-col pb-8">
       <div className="max-w-screen-max mx-auto w-full mt-12 px-6">
@@ -41,10 +45,10 @@ const Hackathons = () => {
             <Collapsible title="Призовые">
               <div className="flex flex-col gap-2">
                 <Checkbox bordered>1 000 000+</Checkbox>
-                <Checkbox bordered>500 000+</Checkbox>
-                <Checkbox bordered>100 000+</Checkbox>
-                <Checkbox bordered>50 000+</Checkbox>
-                <Checkbox bordered>10 000+</Checkbox>
+                <Checkbox bordered>до 1 000 000</Checkbox>
+                <Checkbox bordered>до 100 000</Checkbox>
+                <Checkbox bordered>до 50 000</Checkbox>
+                <Checkbox bordered>до 10 000</Checkbox>
                 <Checkbox bordered>Без призовых</Checkbox>
               </div>
             </Collapsible>
@@ -53,17 +57,16 @@ const Hackathons = () => {
             <h2 className="font-bold text-2xl h-8">Рекомендовано вам</h2>
             <div
               className="grid gap-4 mt-4"
-              style={{ gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))" }}>
-              <HackCard />
-              <HackCard />
-              <HackCard />
-              <HackCard />
+              style={{ gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))" }}>
+              {vm.items.map((item) => (
+                <HackCard key={item.id} item={item} />
+              ))}
             </div>
           </div>
         </div>
       </div>
     </main>
   );
-};
+});
 
 export default Hackathons;

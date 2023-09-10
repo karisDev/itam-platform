@@ -98,17 +98,36 @@ const Profile = observer(() => {
               </div>
             </div>
           </div>
-          <div className="card mt-3">
-            <h3 className="text-xl mb-4">Комментарии</h3>
-            <ul className="flex flex-col gap-3">
-              <li className="flex items-center gap-3">
-                <Avatar size={40} />
-                <div className="flex flex-col gap-1">
-                  <h4 className="text-text-secondary font-bold">Иван Иванов</h4>
-                  <p className="text-lg">Спасибо за помощь с деплоем!</p>
-                </div>
-              </li>
-            </ul>
+          <div className="mt-3 flex gap-3">
+            <div className="card flex-[0.7]">
+              <h3 className="text-xl mb-4">Статьи</h3>
+              <ul className="flex flex-col gap-3">
+                <li
+                  className="flex items-center gap-3 bg-bg-tetriary/60 rounded-lg px-3 p-2 hover:bg-bg-tetriary transition-colors duration-200 cursor-pointer"
+                  onClick={() => setShowAchievmentDialog(true)}>
+                  <span className="text-3xl">😱</span>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="text-lg font-bold"> Как я всех обдурил и победил</h4>
+                    <p className="text-text-primary font-light">
+                      Как ChatGPT Api помогло мне выиграть мой единственный хак
+                    </p>
+                    <span className="text-text-secondary font-bold">5 минут чтения</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div className="card flex-1">
+              <h3 className="text-xl mb-4">Комментарии</h3>
+              <ul className="flex flex-col gap-3">
+                <li className="flex items-center gap-3">
+                  <Avatar size={40} />
+                  <div className="flex flex-col gap-1">
+                    <h4 className="text-text-secondary font-bold">Иван Иванов</h4>
+                    <p className="text-lg">Спасибо за помощь с деплоем!</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </main>

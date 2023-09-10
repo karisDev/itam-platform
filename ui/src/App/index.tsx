@@ -19,7 +19,6 @@ export const App = () => {
       <SwitchTransition>
         <CSSTransition key={location.key} classNames="fade" timeout={300} unmountOnExit>
           <Routes location={location}>
-            {/* <Route index element={<Navigate to="upload" />} /> */}
             <Route path="/login" element={<LoginView />} />
             <Route
               path="/hackathons"

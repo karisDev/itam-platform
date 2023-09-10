@@ -20,7 +20,7 @@ export interface EventResult {
   image_url: string | null;
 }
 
-export namespace EventEndpoints {
+export namespace EventEndpoint {
   export const getEvents = async () => {
     const result = await api.get<EventResult[]>("/api/events");
     return result;

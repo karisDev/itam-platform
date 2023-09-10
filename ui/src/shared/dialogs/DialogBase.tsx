@@ -11,7 +11,8 @@ export default function DialogBase({
   confirmText,
   subtitle,
   width,
-  coolBlur
+  coolBlur,
+  bottom
 }: {
   isOpen: boolean;
   onCancel?: () => void;
@@ -22,6 +23,7 @@ export default function DialogBase({
   subtitle?: string;
   width?: string | number;
   coolBlur?: boolean;
+  bottom?: JSX.Element;
 }) {
   function closeModal() {
     onCancel?.();
@@ -69,12 +71,15 @@ export default function DialogBase({
                       Отмена
                     </Button>
                   )}
-                  <Button
-                    appearance="primary"
-                    onClick={onConfirm}
-                    className={`w-fit ml-auto ${coolBlur ? "with-cool-blur" : ""}`}>
-                    {confirmText}
-                  </Button>
+                  <div className="flex items-center ml-auto gap-3">
+                    {bottom}
+                    <Button
+                      appearance="primary"
+                      onClick={onConfirm}
+                      className={`w-fit ${coolBlur ? "with-cool-blur" : ""}`}>
+                      {confirmText}
+                    </Button>
+                  </div>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

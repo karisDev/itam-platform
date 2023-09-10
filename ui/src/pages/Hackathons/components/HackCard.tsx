@@ -1,6 +1,8 @@
 import LinkSvg from "@/assets/link.svg";
 import DialogBase from "@/dialogs/DialogBase";
+import { Button } from "@/ui/Button";
 import TitleInfo from "@/ui/TitleInfo";
+import { EventResult } from "api/endpoints/EventEndpoint";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
@@ -30,49 +32,65 @@ const MARKDOWN = `
 💡 На хакатоне вы сможете проверить свои навыки, найти новых единомышленников и показать свою сообразительность. Лучшим участникам будет предложен контракт или возможность трудоустройства для продолжения работы над проектом.
 `;
 
-const HackCard = () => {
+const HackCard = ({ item }: { item: EventResult }) => {
   const [expanded, setExpanded] = useState(false);
-  const hack = testEvent;
+  const hack = item;
 
   return (
     <>
       <div
-        className="flex cursor-pointer border-border-primary border rounded-md flex-col hover:border-text-primary transition-all duration-200"
+        className="appear flex cursor-pointer border-border-primary border rounded-md flex-col hover:border-text-primary transition-all duration-200 h-full"
         onClick={() => setExpanded(true)}>
         <div className="flex h-48 relative rounded-t-md overflow-hidden">
-          <img className="object-cover w-full h-full" src={hack.image_url} alt={hack.title} />
+          <img
+            className="object-cover w-full h-full"
+            src={hack?.image_url ?? testEvent.image_url}
+            alt={hack?.title ?? testEvent.title}
+          />
         </div>
-        <div className="p-4">
+        <div className="p-4 flex-1 flex flex-col gap-4">
           <h3 className="font-bold text-base">{hack.title}</h3>
           <ul className="text-text-secondary">
             <li>{hack.date_event}</li>
             <li className="capitalize mt-1">{hack.target}</li>
           </ul>
-          <div className="flex mt-4 justify-between">
+          <div className="flex justify-between mt-auto">
             <span>4 кейса</span>
             <LinkSvg className="text-text-secondary w-5 h-5" />
           </div>
         </div>
       </div>
       <DialogBase
-        confirmText="Предложить команде"
+        confirmText="Позвать команду"
         onConfirm={() => setExpanded(false)}
-        title={hack.title}
+        title={hack?.title ?? "Хакатон"}
         subtitle={"Организатор: AI Open News"}
         isOpen={expanded}
         width={700}
+        bottom={
+          <Button appearance="secondary" className="w-fit self-end">
+            Посетить сайт
+            <LinkSvg className="ml-2 w-5 h-5" />
+          </Button>
+        }
         onCancel={() => setExpanded(false)}>
         <div className="flex flex-col">
           <div className="flex justify-between gap-6">
-            <div className="flex relative rounded-md overflow-hidden max-h-72 flex-1">
-              <img className="object-cover w-full h-full" src={hack.image_url} alt={hack.title} />
+            <div className="flex relative overflow-hidden max-h-72 flex-1">
+              <img
+                className="object-cover w-full h-fit rounded-md max-h-72"
+                src={hack?.image_url ?? testEvent.image_url}
+                alt={hack.title ?? testEvent.title}
+              />
             </div>
-            <div className="flex flex-col justify-between flex-1/2 my-6 gap-6">
-              <TitleInfo title="Дата проведения" info={hack.date_event} />
-              <TitleInfo title="Призовые" info={hack.prize} />
-              <TitleInfo title="Регистрация" info={hack.date_registration} />
+
+            <div className="flex flex-col justify-between flex-1/2 my-6 gap-6 max-w-[250px]">
+              <TitleInfo title="Дата проведения" info={hack?.date_event} />
+              <TitleInfo title="Призовые" info={hack?.prize} />
+              <TitleInfo title="Регистрация" info={hack?.date_registration} />
             </div>
           </div>
+
           <div
             className="mt-6 prose prose-invert max-h-96 overflow-auto"
             style={{
