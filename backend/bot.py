@@ -13,7 +13,6 @@ class Bot:
         response = requests.get(url)
 
     def get_users(self):
-        print('starting parser')
         url = f'https://api.telegram.org/bot{self.token}/getUpdates'
         response = requests.get(url)
         messages = response.json()["result"]
