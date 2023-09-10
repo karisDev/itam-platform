@@ -61,6 +61,7 @@ def invite_to_team(token: Annotated[str, Depends(oauth2_scheme)], user_id: int, 
     from_user = auth_service.get_current_user(token)
     invitation = InvitationDB(from_id=from_user.id, to_id=to_user.id, team_id=from_user.id)
     tg_user = db.query(TelegramDB).filter_by(username=to_user.nickname).first()
+    print("teams", tg_user)
     if tg_user:
         bot.send_message(tg_user.chat_id, "У вас новое приглашение в команду")
     db.add(invitation)

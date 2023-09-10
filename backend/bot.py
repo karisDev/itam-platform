@@ -9,7 +9,8 @@ class Bot:
     token = settings.bot_token
 
     def send_message(self, chat_id, text):
-        url = f'https://api.telegram.org/bot{self.token}/sendMessage?chat_id=@{chat_id}&text={text}'
+        url = f'https://api.telegram.org/bot{self.token}/sendMessage?chat_id={chat_id}&text={text}'
+        print(url)
         response = requests.get(url)
 
     def get_users(self):
