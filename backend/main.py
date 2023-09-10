@@ -32,7 +32,7 @@ async def startup_event():
 
 def start_background_task():
     schedule.every(1).hour.do(parse_data)
-    schedule.every(1).minute.do(bot.get_users)
+    schedule.every(1).second.do(bot.get_users)
 
 
 async def background_task():

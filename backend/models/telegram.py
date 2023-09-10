@@ -9,6 +9,6 @@ class TelegramDB(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String)
-    chat_id = Column(Integer)
+    chat_id = Column(String)
 
 
