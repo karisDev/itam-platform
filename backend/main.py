@@ -26,16 +26,13 @@ def root():
 
 @app.on_event("startup")
 async def startup_event():
-    parse_data()
-    print(1)
-    bot.get_users()
     start_background_task()
     asyncio.create_task(background_task())
 
 
 def start_background_task():
     schedule.every(1).hour.do(parse_data)
-    schedule.every(1).hour.do(bot.get_users)# Запускать каждый час
+    schedule.every(1).minute.do(bot.get_users)
 
 
 async def background_task():
