@@ -50,7 +50,33 @@ const post = <T>(path: string, variables?: any, config?: any): Promise<T> =>
       });
   });
 
+const put = <T>(path: string, variables?: any, config?: any): Promise<T> =>
+  new Promise((resolve, reject) => {
+    axios
+      .put(path, variables, {
+        headers: {
+          Authorization: getStoredAuthToken() ? `Bearer ${getStoredAuthToken()}` : undefined
+        },
+        ...config
+      })
+      .then((response: AxiosResponse) => resolve(response.data))
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status === 401) {
+            removeStoredAuthToken();
+            if (window?.location) {
+              window.location.replace("/login");
+            }
+          }
+          reject(error.response.data);
+        } else {
+          reject(error);
+        }
+      });
+  });
+
 export default {
   get,
-  post
+  post,
+  put
 };
