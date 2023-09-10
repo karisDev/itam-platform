@@ -6,6 +6,7 @@ import MedalSvg from "../assets/medal.svg";
 import usersVm from "../../../pages/Users/users.vm";
 import { useNavigate } from "react-router-dom";
 import HackathonsViewModel from "../../../pages/Hackathons/hackathons.vm";
+import UsersStore from "../../../pages/Users/users.vm";
 
 interface ITitleInfo {
   title: string;
@@ -36,6 +37,8 @@ const TeamMember = (x: { fullname: string; role: string }) => {
 //component if users have team
 export const HaveTeam = observer(() => {
   const navigate = useNavigate();
+  const getAvgRating = () => UsersStore.items.filter((x) => x.user.team_id === AuthStore.auth?.team_id).reduce((acc, x) => acc + x.profile.rating, 0) / UsersStore.items.length;
+
   HackathonsViewModel;
   return (
     <div className="flex flex-col w-full pb-4">
@@ -85,8 +88,8 @@ export const HaveTeam = observer(() => {
           <div
             className="card flex items-center justify-between gap-6"
             style={{ gridArea: "stats" }}>
-            <Stats title="Уровень" value="мидл" />
-            <Stats title="Участников" value="3" />
+            <Stats title="Средний рейтинг" value={getAvgRating().toFixed(0).toString()} />
+            <Stats title="Участников" value={AuthStore.team?.users.length.toString() || "?"} />
             <Stats title="Побед" value="2" />
             <Stats title="Участий" value="8" />
           </div>
