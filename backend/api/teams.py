@@ -59,7 +59,9 @@ def invite_to_team(token: Annotated[str, Depends(oauth2_scheme)], user_id: int, 
     if not to_user:
         raise HTTPException(status_code=400, detail="Юзера не существует")
     from_user = auth_service.get_current_user(token)
-    invitation = InvitationDB(from_id=from_user.id, to_id=to_user.id, team_id=from_user.id)
+    if not from_user.team_id:
+        raise HTTPException(status_code=400, detail="Сначала вступите в команду")
+    invitation = InvitationDB(from_id=from_user.id, to_id=to_user.id, team_id=from_user.team_id)
     tg_user = db.query(TelegramDB).filter_by(username=to_user.nickname).first()
     print("teams", tg_user)
     if tg_user:
