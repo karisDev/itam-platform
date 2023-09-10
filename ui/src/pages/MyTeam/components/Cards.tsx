@@ -42,13 +42,13 @@ export const RequestCard = (x: MockInvite) => {
 
 interface IStats {
   title: string;
-  value: string;
+  info: string;
 }
 export const Stats = (x: IStats) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 align-center">
       <div className="text-sm font-medium text-text-secondary">{x.title}</div>
-      <div className="text-base font-medium">{x.value}</div>
+      <div className="text-sm font-medium">{x.info}</div>
     </div>
   );
 };

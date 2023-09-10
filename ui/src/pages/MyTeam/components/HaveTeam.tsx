@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import HackathonsViewModel from "../../../pages/Hackathons/hackathons.vm";
 import UsersStore from "../../../pages/Users/users.vm";
 import { UserResult } from "api/endpoints/AuthEndpoint.ts";
+import TitleInfo from "@/ui/TitleInfo.tsx";
 
 interface ITitleInfo {
   title: string;
@@ -46,6 +47,26 @@ export const HaveTeam = observer(() => {
     if (members.length === 0) return 0;
     return sumRating(members) / getUsersCount(members);
   }
+  const Achievements = () => {
+    const participations = AuthStore.participations?.filter((p) => p.status === "Участие завершено").slice(0, 3);
+    //get more info for participations from EventsEndpoint.ts
+    const getEventTitle = (id: number) => HackathonsViewModel.items.find((i) => i.id === id)?.title ?? "";
+    const getDate = (id: number) => HackathonsViewModel.items.find((i) => i.id === id)?.date_event ?? "";
+    if (!participations?.length) return <div className={"flex justify-center items-center text-text-secondary text-sm h-[64px]"}>Все еще впереди!</div>
+    return (
+      <>
+      {
+        participations.map((p) => (
+          <div className="flex gap-6">
+            <Stats title={"Хакатон"} info={getEventTitle(p.event_id)} />
+            <Stats title={"Дата"} info={getDate(p.event_id)} />
+            <Stats title={"Место"} info={p.place ?? "-"} />
+          </div>
+        ))
+      }
+      </>
+    );
+  }
   HackathonsViewModel;
   return (
     <div className="flex flex-col w-full pb-4">
@@ -63,7 +84,7 @@ export const HaveTeam = observer(() => {
         <div
           className="grid mt-3"
           style={{
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: "10fr 12fr",
             gridTemplateRows: "auto auto auto",
             gridGap: "14px",
             gridTemplateAreas: `
@@ -93,20 +114,16 @@ export const HaveTeam = observer(() => {
           <div
             className="card flex items-center justify-between gap-6"
             style={{ gridArea: "stats" }}>
-            <Stats title="Средний рейтинг" value={getAvgRating().toFixed(0).toString()} />
-            <Stats title="Участников" value={AuthStore.team?.users.length.toString() || "?"} />
-            <Stats title="Побед" value="2" />
-            <Stats title="Участий" value="8" />
+            <TitleInfo title="Средний рейтинг" info={getAvgRating().toFixed(0).toString()} />
+            <TitleInfo title="Участников" info={AuthStore.team?.users.length.toString() || "?"} />
+            <TitleInfo title="Побед" info="2" />
+            <TitleInfo title="Участий" info="8" />
           </div>
           <div className="card card flex flex-col gap-6" style={{ gridArea: "last-match" }}>
-            <h5 className="text-base font-medium flex">
+            <h5 className="flex text-xl font-semibold items-center">
               Последние достижения <MedalSvg />
             </h5>
-            <div className="flex gap-6">
-              <Stats title="Место" value={"2"} />
-              <Stats title={"Хакатон"} value={"True Tech Hack"} />
-              <Stats title={"Кейс"} value={"Адаптация фильмов"} />
-            </div>
+            <Achievements />
           </div>
           <div className="card flex flex-col gap-6" style={{ gridArea: "invites" }}>
             <h5 className="text-xl font-semibold">Приглашения</h5>
