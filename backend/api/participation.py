@@ -4,23 +4,28 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from backend.core.database import get_db
+from backend.core.security import oauth2_scheme
 from backend.models import EventDB, ParticipationDB
 from backend.models.teams import TeamDB
-from backend.schemas.participation import ParticipationRegister, Participation, ParticipationFinish
+from backend.schemas.participation import Participation, ParticipationFinish
+from backend.services.auth import AuthService, get_auth_service
 
 router = APIRouter(prefix="/participation", tags=["participation"])
 
 
 @router.post("/")
-def declare_participation(participation: ParticipationRegister,
-                          db: Session = Depends(get_db)):
-    team = db.query(TeamDB).filter_by(id=participation.team_id).first()
+def declare_participation(token: Annotated[str, Depends(oauth2_scheme)],
+                          event_id: int,
+                          db: Session = Depends(get_db),
+                          auth_service: AuthService = Depends(get_auth_service)):
+    user = auth_service.get_current_user(token)
+    team = db.query(TeamDB).filter_by(id=user.team_id).first()
     if not team:
         raise HTTPException(status_code=400, detail="Команды не существует")
-    event = db.query(EventDB).filter_by(id=participation.event_id).first()
+    event = db.query(EventDB).filter_by(id=event_id).first()
     if not event:
         raise HTTPException(status_code=400, detail="События не существует")
-    participation = ParticipationDB(ParticipationRegister)
+    participation = ParticipationDB(team_id=team.id, event_id=event_id)
     db.add(participation)
     db.commit()
 
@@ -33,7 +38,7 @@ def get_all_participation(team_id: int, db: Session = Depends(get_db)):
 
 @router.get("/{participation_id}", response_model=Participation)
 def get_one_participation(participation_id: int, db: Session = Depends(get_db)):
-    participation = db.query(ParticipationDB).filter_by(id=participation_id).all()
+    participation = db.query(ParticipationDB).filter_by(id=participation_id).first()
     return participation
 
 

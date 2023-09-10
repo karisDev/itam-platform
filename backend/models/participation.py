@@ -11,8 +11,8 @@ class ParticipationDB(Base):
     team_id = Column(Integer)
     event_id = Column(Integer)
     place = Column(String)
-    description = Column(String)
-    repo_url = Column(String)
     status = Column(String, default="В процессе участия")
+    repo_url = Column(String)
+    description = Column(String)
     added_to_rating = Column(Integer)
 

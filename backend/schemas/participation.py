@@ -5,13 +5,10 @@ from pydantic import BaseModel
 from backend.schemas.events import Event
 
 
-class ParticipationRegister(BaseModel):
+class Participation(BaseModel):
+    id: int
     team_id: int
     event_id: int
-
-
-class Participation(ParticipationRegister):
-    id: int
     place: Optional[str]
     status: str
     repo_url: Optional[str]
