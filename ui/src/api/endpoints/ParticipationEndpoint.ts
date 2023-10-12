@@ -5,7 +5,11 @@ export interface Participation {
   team_id: number;
   event_id: number;
   place: string;
-  status: "В процессе участия" | "На проверке модератором" | "Участие завершено";
+  status:
+    | "В процессе участия"
+    | "На проверке модератором"
+    | "Требуется оценка"
+    | "Участие завершено";
   repo_url: string;
   description: string;
   added_to_rating: number;
